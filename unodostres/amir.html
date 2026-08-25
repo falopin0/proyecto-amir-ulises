@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!--
+  PERFIL DE USUARIO: AMIR (amir1234)
+  Este archivo HTML representa la página de perfil individual de Amir en la red social "CP-ROS".
+  Contiene los datos biográficos propios de Amir, su estado explícito "Desconectado",
+  la misma sección de navegación de contactos, catálogo de juegos compartidos, la misma cuadrícula
+  de amiguitos, y acceso a personalización y paneles emergentes interactivos.
+  Todo el archivo está detalladamente documentado explicando el propósito de cada sección.
+-->
+<html lang="es">
+<head>
+  <!-- Metadatos básicos para codificación de caracteres en español y soporte responsivo para móviles -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Perfil de amir1234</title>
+  <!-- Hoja de estilos principal con diseño visual retro y distribución de elementos -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     BARRA DE NAVEGACIÓN SUPERIOR (TOP-BAR)
+     Propósito: Cabecera fija que permite al usuario navegar por la red social,
+     consultar alertas, solicitudes y cerrar sesión de manera cómoda y accesible.
+     ========================================================================== -->
+<header class="top-bar">
+  <!-- Lado izquierdo: Logotipo corporativo / Derechos reservados -->
+  <div class="top-bar-left">
+    <a href="index.html" title="Ir a la página principal">
+      🌐 <span>CP-ROS - © 2026 S&P</span>
+    </a>
+  </div>
+
+  <!-- Lado derecho: Saludo al usuario activo y enlaces de interacción bien distribuidos -->
+  <div class="top-bar-right">
+    <span class="top-bar-user">👤 amir1234</span>
+    <nav class="top-bar-nav" aria-label="Menú principal de navegación">
+      <a href="index.html" title="Inicio / Explorar perfiles">🏠 Inicio</a>
+      <!-- Botón que activa la ventana modal con las notificaciones recibidas -->
+      <a href="#" class="btn-notificaciones" title="Ver Notificaciones">
+        🔔 Notificaciones <span class="badge-count">3</span>
+      </a>
+      <!-- Botón que activa la ventana modal con las solicitudes de amistad pendientes -->
+      <a href="#" class="btn-solicitudes" title="Ver Solicitudes de Amistad">
+        👥 Solicitudes <span class="badge-count">1</span>
+      </a>
+      <!-- Botón para finalizar sesión y volver a login.html -->
+      <a href="login.html" id="btn-logout" class="btn-logout" title="Cerrar la sesión actual">
+        🚪 Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     CONTENEDOR PRINCIPAL EN DOS COLUMNAS (CONTAINER)
+     Propósito: Estructura central en cuadrícula (grid):
+     - Columna izquierda: Información del perfil de Amir, avatar, estado "Desconectado" y contactos.
+     - Columna derecha: Catálogo de juegos activos y cuadrícula de amiguitos.
+     ========================================================================== -->
+<main class="container">
+
+  <!-- ========================================================================
+       COLUMNA IZQUIERDA: PERFIL Y NAVEGACIÓN PERSONAL DE AMIR
+       ======================================================================== -->
+  <aside class="columna-izquierda" aria-label="Información del perfil de Amir">
+
+    <!-- Nombre principal del usuario -->
+    <h2>amir1234</h2>
+
+    <!-- Foto de avatar principal del usuario Amir -->
+    <div class="perfil-avatar-wrap">
+      <img src="img/mesi.jpg" alt="Foto de perfil de amir1234" class="perfil-avatar" width="150" height="200">
+    </div>
+
+    <!-- Ficha técnica con datos personales y estado de conexión actual -->
+    <div class="perfil-info">
+      <p style="margin: 0;">
+        <!-- Estado de conexión: Requerimiento explícito "Desconectado" para Amir -->
+        <strong>Estado:</strong> <span class="status-offline">Desconectado</span><br>
+        <strong>Edad:</strong> 18 Años<br>
+        <strong>Ubicación:</strong> Gral. Roca<br>
+        <strong>Último Login:</strong> mañana
+      </p>
+    </div>
+
+    <!-- Botón interactivo para cambiar el fondo de pantalla con imagen local -->
+    <button type="button" id="btn-personalizar" class="btn-personalizar" title="Cambiar imagen de fondo">
+      🎨 [+] Editar Tema / Personalizar
+    </button>
+    <!-- Input oculto que se activa mediante JavaScript para seleccionar la imagen local -->
+    <input type="file" id="bg-upload" style="display: none;" accept="image/*" aria-hidden="true">
+
+    <!-- Tarjeta con opciones de navegación de usuario y contactos -->
+    <div class="caja">
+      <div class="caja-header">Navegación de Usuario</div>
+      <div class="caja-body">
+        <details open>
+          <summary>Mis Contactos</summary>
+          <ul>
+            <li><a href="#" class="btn-mensajes">✉️ Enviar un Mensaje</a></li>
+            <li><a href="#" class="btn-notificaciones">🔔 Ver Notificaciones</a></li>
+            <li><a href="#" class="btn-solicitudes">👥 Ver Solicitudes</a></li>
+            <li><a href="#" class="btn-amiguitos">🫂 Ver lista de Amigos</a></li>
+            <li><a href="#" onclick="alert('Solicitud enviada a un nuevo amigo');">➕ Agregar a Amigos</a></li>
+            <li><a href="#buscar-amigos" onclick="alert('Buscando amigos cercanos...');">🔎 Buscar nuevos amigos</a></li>
+            <li><a href="ulises.html" style="color: #4267b2; font-weight: bold;">➡️ Visitar perfil de ulisesl+kpo</a></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================================
+       COLUMNA DERECHA: JUEGOS ACTIVOS Y CUADRÍCULA DE AMIGUITOS
+       ======================================================================== -->
+  <section class="columna-derecha" aria-label="Juegos y lista de amigos">
+
+    <!-- SECCIÓN JUEGOS Y APLICACIONES -->
+    <div class="caja" id="seccion-juegos">
+      <div class="caja-header">🎮 Mis Juegos y Aplicaciones</div>
+      <div class="caja-body">
+        <table class="lista-juegos" summary="Lista de juegos a los que juega el usuario">
+
+          <!-- Juego 1: Minecraft 3 -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/minecraft clone.jpg" alt="Ícono de Minecraft 3" width="50" height="50"><br>MC3
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="minecraft3.html">minecraft3</a></div>
+              <div class="juego-desc">¡Rango Constructor Maestro! Pelea el #1 contra Shadow y forja la Armadura de Netherite Legendaria con Protección Cósmica derrotando al Wither de Diamante.</div>
+            </td>
+          </tr>
+
+          <!-- Juego 2: Gun 2.0 -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/gun2.0.png" alt="Ícono de Gun 2.0" width="50" height="50"><br>GUN
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="gun2.0.html">gun2.0</a></div>
+              <div class="juego-desc">¡Operaciones de élite con Batistuta y Ghost-Ulises! Usa 4,500 balas, saca 25 bajas en Refinería Nuclear y desbloquea el Subfusil Láser MK-II.</div>
+            </td>
+          </tr>
+
+          <!-- Juego 3: Skate 2 -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/gonogld.jpg" alt="Ícono de Skate 2" width="50" height="50"><br>SKATE 2
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="skate2.html">skate 2</a></div>
+              <div class="juego-desc">¡Team Pro con Foy, P-Rod, Joslin, Milton, Bam y Messi! Tira el switch half-cab heelflip bajando la lyon twenty five, cayendo sobre los ocho tornillos y desbloquea la Impact Legendaria para que las wachas se te tiren encima.</div>
+            </td>
+          </tr>
+
+          <!-- Juego 4: Eyes Doom -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/eyes doom.jpg" alt="Ícono de Eyes Doom" width="50" height="50"><br>DOOM
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="eyes-doom.html">eyes doom</a></div>
+              <div class="juego-desc">¡Récord Nivel 45 en el abismo cósmico! Enfrenta al Ojo Primordial, conecta un combo de 99 golpes sin pestañear y desbloquea el Ojo del Caos Supremo Legendario.</div>
+            </td>
+          </tr>
+
+          <!-- Juego 5: Blue Spiral -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/blue spiral.jpg" alt="Ícono de Blue Spiral" width="50" height="50"><br>SPIRAL
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="blue-spiral.html">blue spiral</a></div>
+              <div class="juego-desc">¡Evolución de mascotas con Ulises, Amir y Fede P! Recarga 10,000 Watios de amistad cuántica para desbloquear la Evolución Omega Espiral Legendaria con Alas de Luz.</div>
+            </td>
+          </tr>
+
+        </table>
+
+        <!-- Enlace auxiliar para ver catálogo completo -->
+        <div class="ver-directorio">
+          <a href="#">Ver Directorio de Juegos »</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN AMIGUITOS: Cuadrícula con los 6 amigos en común -->
+    <div class="caja" id="seccion-amiguitos">
+      <div class="caja-header">
+        <span>🫂 Amiguitos (6)</span>
+        <a href="#" class="btn-amiguitos" style="font-size: 11px; color: #3b5998; text-decoration: none;">Ver todos</a>
+      </div>
+      <div class="caja-body grid-amigos">
+
+        <!-- Amigo 1 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('img/fede p.jpeg')" title="Avatar de fede p"></div>
+          <div class="amigo-nombre">fede p</div>
+          <span class="status-online">Online</span>
+        </div>
+
+        <!-- Amigo 2 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=2')" title="Avatar de el niño torres"></div>
+          <div class="amigo-nombre">el niño torres</div>
+          <span class="status-online">Online</span>
+        </div>
+
+        <!-- Amigo 3 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=3')" title="Avatar de rompeviejas747"></div>
+          <div class="amigo-nombre">rompeviejas747</div>
+          <span class="status-offline">Offline</span>
+        </div>
+
+        <!-- Amigo 4 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=4')" title="Avatar de tukito"></div>
+          <div class="amigo-nombre">tukito</div>
+          <span class="status-online">Online</span>
+        </div>
+
+        <!-- Amigo 5 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=5')" title="Avatar de Batistuta"></div>
+          <div class="amigo-nombre">Batistuta</div>
+          <span class="status-offline">Offline</span>
+        </div>
+
+        <!-- Amigo 6 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=6')" title="Avatar de Serafio"></div>
+          <div class="amigo-nombre">Serafio</div>
+          <span class="status-offline">Offline</span>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ==========================================================================
+     VENTANA MODAL REUTILIZABLE (PANELES EMERGENTES)
+     Propósito: Estructura HTML contenedora para inyectar dinámicamente notificaciones,
+     solicitudes y mensajes mediante JavaScript sin recargar el navegador.
+     ========================================================================== -->
+<div id="modal-container" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <div class="caja-header">
+      <span id="modal-title">Título</span>
+      <button class="close-modal" aria-label="Cerrar modal" style="float: right;">✕</button>
+    </div>
+    <div class="caja-body" id="modal-body">
+      <!-- El contenido dinámico se inserta desde app.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Carga del archivo JavaScript principal con toda la lógica interactiva -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

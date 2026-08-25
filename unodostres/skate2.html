@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+  PÁGINA DE JUEGO: SKATE 2 (skate2.html)
+  Esta página muestra la vista detallada del juego "skate 2", incluyendo
+  su portada oficial (gonogld.jpg), el roster estelar de skaters integrado por
+  Jamie Foy, Paul Rodriguez, Chris Joslin, Milton Martinez, Bam Margera y Leo Messi,
+  así como la misión legendaria de desbloquear el "switch half-cab heelflip" bajando la
+  lyon twenty five y desbloquea la Impact Legendaria para ganar el máximo respeto y admiración ("para que las wachas se te tiren encima").
+  Todo el archivo está completamente documentado y estructurado con el diseño retro de la plataforma.
+-->
+<html lang="es">
+<head>
+  <!-- Codificación UTF-8 para soporte de caracteres en español y emojis -->
+  <meta charset="UTF-8">
+  <!-- Escalamiento adaptable para dispositivos móviles y monitores -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Juego: skate 2</title>
+  <!-- Enlace a la hoja de estilos global con diseño retro años 2000 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     BARRA SUPERIOR DE NAVEGACIÓN (TOP-BAR)
+     Propósito: Navegación global consistente en todo el sitio web.
+     ========================================================================== -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <a href="index.html" title="Volver al Inicio">
+      🌐 <span>CP-ROS - © 2026 S&P</span>
+    </a>
+  </div>
+  <div class="top-bar-right">
+    <nav class="top-bar-nav" aria-label="Navegación superior">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="ulises.html">👤 Ulises</a>
+      <a href="amir.html">👤 Amir</a>
+      <!-- Botones con ventanas modales emergentes -->
+      <a href="#" class="btn-notificaciones">🔔 Notificaciones <span class="badge-count">3</span></a>
+      <a href="#" class="btn-solicitudes">👥 Solicitudes <span class="badge-count">1</span></a>
+      <a href="login.html" id="btn-logout" class="btn-logout">🚪 Cerrar Sesión</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     CONTENEDOR CENTRAL DEL JUEGO (CONTAINER)
+     Propósito: Muestra el título, la portada oficial (gonogld.jpg), el team pro,
+     la mecánica de truco especial y el lanzador interactivo.
+     ========================================================================== -->
+<main class="container container-full">
+  <h2>🎮 Juego: skate 2</h2>
+
+  <div class="caja">
+    <div class="caja-header">
+      <span>🛹 Información y Ficha Técnica: Skate 2</span>
+    </div>
+    <div class="caja-body" style="text-align: center;">
+      <!-- Portada oficial del juego: gonogld.jpg -->
+      <div style="margin-bottom: 15px;">
+        <img src="img/gonogld.jpg" alt="Portada Oficial de Skate 2" width="230" style="border-radius: 8px; border: 2px solid #3b5998; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+      </div>
+
+      <!-- Resumen y sinopsis general -->
+      <h3 style="color: #3b5998; margin: 10px 0 5px; font-size: 16px;">¡Domina las calles con la simulación urbana definitiva!</h3>
+      <p style="font-size: 13px; line-height: 1.6; max-width: 600px; margin: 0 auto 15px; color: #333;">
+        Ponte las zapatillas, agarra la tabla y sal a conquistar cada bordillo, barandilla y mega-rampa.
+        Con físicas hiperrealistas, sesiones callejeras clandestinas y los mejores spots del asfalto.
+      </p>
+
+      <!-- Bloque: Team Pro de Skaters Oficiales -->
+      <div style="background-color: #f7f7f7; border: 1px solid #dcdcdc; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 8px; color: #3b5998; font-size: 14px; border-bottom: 1px dashed #ccc; padding-bottom: 4px;">
+          👥 Team Pro Oficial de Skaters Integrantes:
+        </h4>
+        <ul style="font-size: 12px; line-height: 1.7; margin: 0; padding-left: 20px; color: #222;">
+          <li><b>Jamie Foy:</b> El rey del pinch y los crooked grinds masivos en barandas imposibles.</li>
+          <li><b>Paul Rodriguez (P-Rod):</b> Leyenda indiscutida del skate de calle y la precisión milimétrica en switch.</li>
+          <li><b>Chris Joslin:</b> La bestia destructora de escaleras gigantes y gaps con potencia insuperable.</li>
+          <li><b>Milton Martinez:</b> Demencia y adrenalina pura, volando sobre techos y transiciones extremas con estilo Thrasher SOTY.</li>
+          <li><b>Bam Margera:</b> El rebelde legendario de Jackass y Element, maestro del caos callejero y la adrenalina sin filtro.</li>
+          <li><b>Leo Messi:</b> El astro supremo sobre cuatro ruedas, regateando la física con magia zurda, giros milimétricos y el estilo más fino del planeta.</li>
+        </ul>
+      </div>
+
+      <!-- Bloque: Misión Legendaria y Desbloqueable -->
+      <div style="background-color: #fff9e6; border: 1px solid #ffe082; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 6px; color: #b78103; font-size: 14px;">
+          ✨ Misión de Respeto Supremo: El Desbloqueo Legendario
+        </h4>
+        <p style="font-size: 12px; line-height: 1.6; margin: 0; color: #444;">
+          Para alcanzar el rango máximo de popularidad callejera y <b>que las wachas se te tiren encima</b>,
+          debes desbloquear y clavar a la perfección el legendario <b>"switch half-cab heelflip"</b> bajando
+          la lyon twenty five y desbloquea la Impact Legendaria. ¡Domina el timing de la tabla, cayendo sobre
+          los ocho tornillos limpio sobre los adoquines y desata el hype masivo de toda la multitud!
+        </p>
+      </div>
+
+      <!-- Botón de acción interactivo para iniciar la partida -->
+      <button onclick="alert('🛹 ¡Partida de Skate 2 iniciada!\n\nSkater seleccionado: Leo Messi & Jamie Foy.\nObjetivo activo: ¡Tira el switch half-cab heelflip bajando la lyon twenty five, cayendo sobre los ocho tornillos y desbloquea la Impact Legendaria para que las wachas se te tiren encima!')" style="font-size: 14px; font-weight: bold; padding: 10px 24px; background-color: #3b5998; color: #fff; border: 1px solid #29447e; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        ▶️ Jugar Skate 2 Ahora
+      </button>
+
+      <div style="margin-top: 15px;">
+        <a href="index.html" style="color: #3b5998; text-decoration: none; font-size: 13px;">« Volver al catálogo de juegos</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==========================================================================
+     VENTANA MODAL REUTILIZABLE PARA PANELES EMERGENTES
+     ========================================================================== -->
+<div id="modal-container" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <div class="caja-header">
+      <span id="modal-title">Título</span>
+      <button class="close-modal" aria-label="Cerrar modal" style="float: right;">✕</button>
+    </div>
+    <div class="caja-body" id="modal-body">
+      <!-- Contenido inyectado dinámicamente por JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Inclusión del script general con el gestor de modales e interactividad -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

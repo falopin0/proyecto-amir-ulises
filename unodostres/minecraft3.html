@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<!--
+  PÁGINA DE JUEGO: MINECRAFT 3 (minecraft3.html)
+  Esta página muestra la vista detallada del juego "minecraft3", incluyendo
+  su portada oficial (img/minecraft clone.jpg), el gremio de constructores legendarios,
+  el duelo por el 1er lugar contra Shadow y la misión épica de forjar la Armadura de Netherite Legendaria.
+  Todo el archivo está completamente documentado y estructurado con el diseño retro de la plataforma.
+-->
+<html lang="es">
+<head>
+  <!-- Codificación UTF-8 para soporte de caracteres en español y emojis -->
+  <meta charset="UTF-8">
+  <!-- Escalamiento adaptable para dispositivos móviles y monitores -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Juego: minecraft3</title>
+  <!-- Enlace a la hoja de estilos global con diseño retro años 2000 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     BARRA SUPERIOR DE NAVEGACIÓN (TOP-BAR)
+     Propósito: Navegación global consistente en todo el sitio web.
+     ========================================================================== -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <a href="index.html" title="Volver al Inicio">
+      🌐 <span>CP-ROS - © 2026 S&P</span>
+    </a>
+  </div>
+  <div class="top-bar-right">
+    <nav class="top-bar-nav" aria-label="Navegación superior">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="ulises.html">👤 Ulises</a>
+      <a href="amir.html">👤 Amir</a>
+      <!-- Botones con ventanas modales emergentes -->
+      <a href="#" class="btn-notificaciones">🔔 Notificaciones <span class="badge-count">3</span></a>
+      <a href="#" class="btn-solicitudes">👥 Solicitudes <span class="badge-count">1</span></a>
+      <a href="login.html" id="btn-logout" class="btn-logout">🚪 Cerrar Sesión</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     CONTENEDOR CENTRAL DEL JUEGO (CONTAINER)
+     Propósito: Muestra el título, la portada oficial, gremio de constructores,
+     mecánica de forja legendaria y lanzador interactivo.
+     ========================================================================== -->
+<main class="container container-full">
+  <h2>🎮 Juego: minecraft3</h2>
+
+  <div class="caja">
+    <div class="caja-header">
+      <span>⛏️ Información y Ficha Técnica: Minecraft 3</span>
+    </div>
+    <div class="caja-body" style="text-align: center;">
+      <!-- Portada oficial del juego -->
+      <div style="margin-bottom: 15px;">
+        <img src="img/minecraft clone.jpg" alt="Portada Oficial de Minecraft 3" width="230" style="border-radius: 8px; border: 2px solid #3b5998; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+      </div>
+
+      <!-- Resumen y sinopsis general -->
+      <h3 style="color: #3b5998; margin: 10px 0 5px; font-size: 16px;">¡Construye imperios colosales, domina el Nether y conquista las dimensiones infinitas!</h3>
+      <p style="font-size: 13px; line-height: 1.6; max-width: 600px; margin: 0 auto 15px; color: #333;">
+        Entra al sandbox voxel definitivo con generación procedural hiperrealista, mecánicas avanzadas de redstone cuántica
+        y batallas épicas contra criaturas míticas. ¡Protege tu fortaleza, forja herramientas ancestrales y domina la tabla de clasificación mundial!
+      </p>
+
+      <!-- Bloque: Gremio y Roster de Constructores Legendarios -->
+      <div style="background-color: #f7f7f7; border: 1px solid #dcdcdc; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 8px; color: #3b5998; font-size: 14px; border-bottom: 1px dashed #ccc; padding-bottom: 4px;">
+          👥 Gremio de Constructores y Maestros de Supervivencia:
+        </h4>
+        <ul style="font-size: 12px; line-height: 1.7; margin: 0; padding-left: 20px; color: #222;">
+          <li><b>Shadow (El Emperador del Nether):</b> Actual 1er lugar invicto del servidor, maestro de la redstone cuántica y fortalezas impenetrables de obsidiana.</li>
+          <li><b>Tukito el Minero:</b> Especialista en minería profunda a la capa -58 y extracción masiva de diamantes puros con pico de Netherite encantado.</li>
+          <li><b>El Niño Torres:</b> Domador de dragones del End y arquitecto de mega-granjas automáticas de oro y pólvora.</li>
+          <li><b>Rompeviejas747:</b> Demoledor experto con dinamita TNT y creador de trampas tridimensionales de caída libre.</li>
+          <li><b>Serafio el Alquimista:</b> Maestro de pócimas de regeneración IV e invisibilidad extrema para asaltos nocturnos a templos oceánicos.</li>
+        </ul>
+      </div>
+
+      <!-- Bloque: Misión Legendaria y Desbloqueable -->
+      <div style="background-color: #fff9e6; border: 1px solid #ffe082; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 6px; color: #b78103; font-size: 14px;">
+          ✨ Misión de Constructor Supremo: El Desbloqueo Legendario
+        </h4>
+        <p style="font-size: 12px; line-height: 1.6; margin: 0; color: #444;">
+          Para arrebatarle el 1er puesto a <b>Shadow</b> y consagrarte como el Supremo Constructor Maestro,
+          debes invocar y vencer al <b>Wither de Tres Cabezas de Diamante</b> en el abismo del End, acertar un golpe
+          crítico con el <b>Hacha de Netherite Ancestral con Filo V</b> y desbloquear la <b>Armadura de Netherite Legendaria con Protección Cósmica</b>,
+          deslumbrando a toda la comunidad y consagrando tu reinado en el servidor.
+        </p>
+      </div>
+
+      <!-- Botón de acción interactivo para iniciar la partida -->
+      <button onclick="alert('⛏️ ¡Partida de Minecraft 3 iniciada!\n\nConstructor: Rango Maestro (Puesto #2 vs Shadow).\nObjetivo activo: ¡Invoca al Wither de Diamante en el End, asesta el golpe crítico y desbloquea la Armadura Legendaria!')" style="font-size: 14px; font-weight: bold; padding: 10px 24px; background-color: #3b5998; color: #fff; border: 1px solid #29447e; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        ▶️ Jugar Minecraft 3 Ahora
+      </button>
+
+      <div style="margin-top: 15px;">
+        <a href="index.html" style="color: #3b5998; text-decoration: none; font-size: 13px;">« Volver al catálogo de juegos</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==========================================================================
+     VENTANA MODAL REUTILIZABLE PARA PANELES EMERGENTES
+     ========================================================================== -->
+<div id="modal-container" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <div class="caja-header">
+      <span id="modal-title">Título</span>
+      <button class="close-modal" aria-label="Cerrar modal" style="float: right;">✕</button>
+    </div>
+    <div class="caja-body" id="modal-body">
+      <!-- Contenido inyectado dinámicamente por JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Inclusión del script general con el gestor de modales e interactividad -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

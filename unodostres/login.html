@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+  PÁGINA DE ACCESO Y DERIVACIÓN A PERFILES (login.html)
+  Esta página permite a los usuarios acceder directamente a los perfiles individuales:
+  - Perfil de Ulises -> ulises.html
+  - Perfil de Amir   -> amir.html
+  Todo el archivo está completamente anotado y comentado explicando el porqué de cada etiqueta y función.
+-->
+<html lang="es">
+<head>
+  <!-- Definición del juego de caracteres UTF-8 para soporte de tildes y símbolos -->
+  <meta charset="UTF-8">
+  <!-- Viewport para visualización responsiva correcta en pantallas móviles y de escritorio -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Iniciar Sesión</title>
+  <!-- Enlace a la hoja de estilos global con la estética de red social vintage -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     BARRA SUPERIOR DE ENCABEZADO (TOP-BAR)
+     Propósito: Muestra el logotipo de la marca y enlaces directos de navegación.
+     ========================================================================== -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <a href="index.html" title="Volver al Inicio">
+      🌐 <span>CP-ROS - © 2026 S&P. Todos los derechos reservados.</span>
+    </a>
+  </div>
+  <div class="top-bar-right">
+    <nav class="top-bar-nav">
+      <a href="index.html">🏠 Ver Portada</a>
+      <a href="ulises.html">👤 Perfil Ulises</a>
+      <a href="amir.html">👤 Perfil Amir</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     CONTENEDOR CENTRAL DE ACCESO A PERFILES (CONTAINER)
+     Propósito: Caja centrada en la pantalla que aloja las opciones para abrir los perfiles.
+     ========================================================================== -->
+<main class="container container-login">
+
+  <h2>🔐 Iniciar Sesión en CP-ROS</h2>
+
+  <div class="caja">
+    <div class="caja-header">
+      <span>Seleccionar Perfil para Ingresar</span>
+    </div>
+    <div class="caja-body text-center">
+
+      <p style="font-size: 13px; color: #555; margin-bottom: 16px;">
+        Selecciona uno de los perfiles disponibles para ingresar directamente a su espacio personal:
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 0 auto;">
+        <!-- Opción para abrir el perfil de Ulises -->
+        <a href="ulises.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #4267b2; color: white; padding: 12px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          👉 Abrir Perfil de Ulises (ulisesl+kpo) »
+        </a>
+
+        <!-- Opción para abrir el perfil de Amir -->
+        <a href="amir.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #2b8a3e; color: white; padding: 12px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          👉 Abrir Perfil de Amir (amir1234) »
+        </a>
+      </div>
+
+      <div style="margin-top: 18px;">
+        <a href="index.html" style="color: #3b5998; text-decoration: none; font-size: 13px;">« Volver a la Portada Principal</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pista de ayuda para desarrollo y evaluación de credenciales válidas -->
+  <div style="background: rgba(255, 255, 255, 0.8); border: 1px dashed #999; border-radius: 6px; padding: 10px; font-size: 12px; color: #444; line-height: 1.5; margin-top: 15px;">
+    <strong>💡 Cuentas de prueba disponibles:</strong><br>
+    • Usuario: <code>ulisesl+kpo</code> (o <code>ulises</code>) | Clave: <code>12345</code> (Deriva a <b>ulises.html</b>)<br>
+    • Usuario: <code>amir1234</code> (o <code>amir</code>) | Clave: <code>12345</code> (Deriva a <b>amir.html</b>)
+  </div>
+
+</main>
+
+</body>
+</html>

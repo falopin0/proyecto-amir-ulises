@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<!--
+  PÁGINA DE JUEGO: GUN 2.0 (gun2.0.html)
+  Esta página muestra la vista detallada del juego "gun2.0", incluyendo
+  su portada oficial (img/gun2.0.png), el escuadrón táctico de operadores de élite,
+  el arsenal de 4,500 balas y la misión de desbloquear el Subfusil Láser de Plasma MK-II.
+  Todo el archivo está completamente documentado y estructurado con el diseño retro de la plataforma.
+-->
+<html lang="es">
+<head>
+  <!-- Codificación UTF-8 para soporte de caracteres en español y emojis -->
+  <meta charset="UTF-8">
+  <!-- Escalamiento adaptable para dispositivos móviles y monitores -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Juego: gun2.0</title>
+  <!-- Enlace a la hoja de estilos global con diseño retro años 2000 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     BARRA SUPERIOR DE NAVEGACIÓN (TOP-BAR)
+     Propósito: Navegación global consistente en todo el sitio web.
+     ========================================================================== -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <a href="index.html" title="Volver al Inicio">
+      🌐 <span>CP-ROS - © 2026 S&P</span>
+    </a>
+  </div>
+  <div class="top-bar-right">
+    <nav class="top-bar-nav" aria-label="Navegación superior">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="ulises.html">👤 Ulises</a>
+      <a href="amir.html">👤 Amir</a>
+      <!-- Botones con ventanas modales emergentes -->
+      <a href="#" class="btn-notificaciones">🔔 Notificaciones <span class="badge-count">3</span></a>
+      <a href="#" class="btn-solicitudes">👥 Solicitudes <span class="badge-count">1</span></a>
+      <a href="login.html" id="btn-logout" class="btn-logout">🚪 Cerrar Sesión</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     CONTENEDOR CENTRAL DEL JUEGO (CONTAINER)
+     Propósito: Muestra el título, la portada oficial, escuadrón táctico,
+     operación especial con 4,500 balas y lanzador interactivo.
+     ========================================================================== -->
+<main class="container container-full">
+  <h2>🎮 Juego: gun2.0</h2>
+
+  <div class="caja">
+    <div class="caja-header">
+      <span>🔫 Información y Ficha Técnica: Gun 2.0</span>
+    </div>
+    <div class="caja-body" style="text-align: center;">
+      <!-- Portada oficial del juego -->
+      <div style="margin-bottom: 15px;">
+        <img src="img/gun2.0.png" alt="Portada Oficial de Gun 2.0" width="230" style="border-radius: 8px; border: 2px solid #3b5998; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+      </div>
+
+      <!-- Resumen y sinopsis general -->
+      <h3 style="color: #3b5998; margin: 10px 0 5px; font-size: 16px;">¡Combates tácticos a quemarropa, arsenales futuristas y guerra de clanes sin piedad!</h3>
+      <p style="font-size: 13px; line-height: 1.6; max-width: 600px; margin: 0 auto 15px; color: #333;">
+        Entra al campo de batalla con balística de última generación, personalización extrema de armamento y enfrentamientos
+        multijugador frenéticos. ¡Coordina con tu escuadrón, administra tu munición pesada y domina la zona de guerra!
+      </p>
+
+      <!-- Bloque: Escuadrón Táctico de Operadores de Élite -->
+      <div style="background-color: #f7f7f7; border: 1px solid #dcdcdc; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 8px; color: #3b5998; font-size: 14px; border-bottom: 1px dashed #ccc; padding-bottom: 4px;">
+          👥 Escuadrón de Operadores y Fuerzas Especiales:
+        </h4>
+        <ul style="font-size: 12px; line-height: 1.7; margin: 0; padding-left: 20px; color: #222;">
+          <li><b>Sargento Batistuta:</b> Artillero pesado con ametralladora rotativa Vulcan de 6 cañones y chaleco de titanio reforzado.</li>
+          <li><b>Ghost-Ulises:</b> Francotirador táctico con rifle Barret .50 y mira térmica, letal e indetectable a más de 1,200 metros.</li>
+          <li><b>Amir "El Demoledor":</b> Especialista en asalto urbano, escopetas automáticas de calibre 12 y granadas de pulso PEM.</li>
+          <li><b>Víbora Negra (Fede P):</b> Asesino de operaciones encubiertas con subfusiles duales silenciados y camuflaje térmico.</li>
+          <li><b>Comandante Tukito:</b> Estratega en comunicaciones que despliega drones bombarderos autónomos y misiles guiados.</li>
+        </ul>
+      </div>
+
+      <!-- Bloque: Misión Legendaria y Desbloqueable -->
+      <div style="background-color: #fff9e6; border: 1px solid #ffe082; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 6px; color: #b78103; font-size: 14px;">
+          ✨ Operación Tormenta Cero: El Desbloqueo Legendario
+        </h4>
+        <p style="font-size: 12px; line-height: 1.6; margin: 0; color: #444;">
+          Con tu bono diario de <b>4,500 de munición de alto calibre</b>, debes liderar la incursión a la Refinería Nuclear,
+          conseguir una racha de <b>25 bajas consecutivas sin morir</b>, desactivar el reactor enemigo en menos de 30 segundos
+          y desbloquear el <b>Subfusil Láser de Plasma Legendario MK-II</b>, escalando de inmediato al puesto #1 del clan y sembrando el terror en el lobby.
+        </p>
+      </div>
+
+      <!-- Botón de acción interactivo para iniciar la partida -->
+      <button onclick="alert('🔫 ¡Partida de Gun 2.0 iniciada!\n\nOperadores: Sargento Batistuta & Ghost-Ulises (4,500 balas listas).\nObjetivo activo: ¡Racha de 25 bajas en Refinería Nuclear y desbloquea el Subfusil Láser MK-II!')" style="font-size: 14px; font-weight: bold; padding: 10px 24px; background-color: #3b5998; color: #fff; border: 1px solid #29447e; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        ▶️ Jugar Gun 2.0 Ahora
+      </button>
+
+      <div style="margin-top: 15px;">
+        <a href="index.html" style="color: #3b5998; text-decoration: none; font-size: 13px;">« Volver al catálogo de juegos</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==========================================================================
+     VENTANA MODAL REUTILIZABLE PARA PANELES EMERGENTES
+     ========================================================================== -->
+<div id="modal-container" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <div class="caja-header">
+      <span id="modal-title">Título</span>
+      <button class="close-modal" aria-label="Cerrar modal" style="float: right;">✕</button>
+    </div>
+    <div class="caja-body" id="modal-body">
+      <!-- Contenido inyectado dinámicamente por JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Inclusión del script general con el gestor de modales e interactividad -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

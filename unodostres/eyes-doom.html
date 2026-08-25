@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<!--
+  PÁGINA DE JUEGO: EYES DOOM (eyes-doom.html)
+  Esta página muestra la vista detallada del juego "eyes doom", incluyendo
+  su portada oficial (img/eyes doom.jpg), las entidades y guardianes del abismo,
+  el récord del Nivel 45 y la misión mística de desbloquear el Ojo del Caos Supremo.
+  Todo el archivo está completamente documentado y estructurado con el diseño retro de la plataforma.
+-->
+<html lang="es">
+<head>
+  <!-- Codificación UTF-8 para soporte de caracteres en español y emojis -->
+  <meta charset="UTF-8">
+  <!-- Escalamiento adaptable para dispositivos móviles y monitores -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Juego: eyes doom</title>
+  <!-- Enlace a la hoja de estilos global con diseño retro años 2000 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     BARRA SUPERIOR DE NAVEGACIÓN (TOP-BAR)
+     Propósito: Navegación global consistente en todo el sitio web.
+     ========================================================================== -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <a href="index.html" title="Volver al Inicio">
+      🌐 <span>CP-ROS - © 2026 S&P</span>
+    </a>
+  </div>
+  <div class="top-bar-right">
+    <nav class="top-bar-nav" aria-label="Navegación superior">
+      <a href="index.html">🏠 Inicio</a>
+      <a href="ulises.html">👤 Ulises</a>
+      <a href="amir.html">👤 Amir</a>
+      <!-- Botones con ventanas modales emergentes -->
+      <a href="#" class="btn-notificaciones">🔔 Notificaciones <span class="badge-count">3</span></a>
+      <a href="#" class="btn-solicitudes">👥 Solicitudes <span class="badge-count">1</span></a>
+      <a href="login.html" id="btn-logout" class="btn-logout">🚪 Cerrar Sesión</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     CONTENEDOR CENTRAL DEL JUEGO (CONTAINER)
+     Propósito: Muestra el título, la portada oficial, guardianes arcanos,
+     desafío del abismo y lanzador interactivo.
+     ========================================================================== -->
+<main class="container container-full">
+  <h2>🎮 Juego: eyes doom</h2>
+
+  <div class="caja">
+    <div class="caja-header">
+      <span>👁️ Información y Ficha Técnica: Eyes Doom</span>
+    </div>
+    <div class="caja-body" style="text-align: center;">
+      <!-- Portada oficial del juego -->
+      <div style="margin-bottom: 15px;">
+        <img src="img/eyes doom.jpg" alt="Portada Oficial de Eyes Doom" width="230" style="border-radius: 8px; border: 2px solid #3b5998; box-shadow: 0 4px 10px rgba(0,0,0,0.25);">
+      </div>
+
+      <!-- Resumen y sinopsis general -->
+      <h3 style="color: #3b5998; margin: 10px 0 5px; font-size: 16px;">¡Desciende al abismo psicodélico donde la mirada cósmica todo lo ve y todo lo juzga!</h3>
+      <p style="font-size: 13px; line-height: 1.6; max-width: 600px; margin: 0 auto 15px; color: #333;">
+        Enfréntate a las pesadillas arcanas del vacío en un frenético dungeon crawler de reflejos puros.
+        ¡Esquiva tormentas de rayos fotónicos, descifra runas arcanas y rompe las barreras dimensionales del abismo infinito!
+      </p>
+
+      <!-- Bloque: Guardianes y Entidades del Abismo -->
+      <div style="background-color: #f7f7f7; border: 1px solid #dcdcdc; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 8px; color: #3b5998; font-size: 14px; border-bottom: 1px dashed #ccc; padding-bottom: 4px;">
+          👥 Bestiario y Entidades del Vacío Cósmico:
+        </h4>
+        <ul style="font-size: 12px; line-height: 1.7; margin: 0; padding-left: 20px; color: #222;">
+          <li><b>El Ojo Primordial (Cthulhu Eye):</b> Entidad dimensional milenaria que dispara rayos fotónicos omnidireccionales y distorsiona el flujo temporal.</li>
+          <li><b>Centinela del Éter:</b> Titán acorazado con escudo de plasma que refleja proyectiles mágicos y absorbe daño elemental.</li>
+          <li><b>Vórtice Carmesí:</b> Espectro de velocidad fulgurante que devora las almas caídas en las sombras del laberinto abisal.</li>
+          <li><b>El Oráculo Ciego:</b> Vidente místico que predice patrones de combate y revela cámaras secretas en la oscuridad.</li>
+          <li><b>Caballero del Vacío:</b> Guerrero espectral armado con una espada de antimateria forjada en el núcleo de una estrella colapsada.</li>
+        </ul>
+      </div>
+
+      <!-- Bloque: Misión Legendaria y Desbloqueable -->
+      <div style="background-color: #fff9e6; border: 1px solid #ffe082; border-radius: 6px; padding: 12px 15px; max-width: 620px; margin: 0 auto 15px; text-align: left;">
+        <h4 style="margin: 0 0 6px; color: #b78103; font-size: 14px;">
+          ✨ Travesía del Abismo Profundo: El Desbloqueo Legendario
+        </h4>
+        <p style="font-size: 12px; line-height: 1.6; margin: 0; color: #444;">
+          Tras alcanzar el épico récord del <b>Nivel 45 en el abismo</b>, debes descender a la Cámara Prohibida del Nivel 50,
+          esquivar la lluvia de meteoritos oculares en cámara lenta, conectar un <b>combo arcano de 99 golpes sin pestañear</b>
+          y desbloquear el <b>Ojo del Caos Supremo Legendario</b>, desatando una supernova cósmica que purifica todas las dimensiones.
+        </p>
+      </div>
+
+      <!-- Botón de acción interactivo para iniciar la partida -->
+      <button onclick="alert('👁️ ¡Partida de Eyes Doom iniciada!\n\nEstado: Récord Nivel 45 en el Abismo.\nObjetivo activo: ¡Combo de 99 golpes sin pestañear en Nivel 50 y desbloquea el Ojo del Caos Supremo Legendario!')" style="font-size: 14px; font-weight: bold; padding: 10px 24px; background-color: #3b5998; color: #fff; border: 1px solid #29447e; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        ▶️ Jugar Eyes Doom Ahora
+      </button>
+
+      <div style="margin-top: 15px;">
+        <a href="index.html" style="color: #3b5998; text-decoration: none; font-size: 13px;">« Volver al catálogo de juegos</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==========================================================================
+     VENTANA MODAL REUTILIZABLE PARA PANELES EMERGENTES
+     ========================================================================== -->
+<div id="modal-container" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <div class="caja-header">
+      <span id="modal-title">Título</span>
+      <button class="close-modal" aria-label="Cerrar modal" style="float: right;">✕</button>
+    </div>
+    <div class="caja-body" id="modal-body">
+      <!-- Contenido inyectado dinámicamente por JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Inclusión del script general con el gestor de modales e interactividad -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

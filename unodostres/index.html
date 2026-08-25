@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--
+  PORTAL PRINCIPAL / PORTADA DE LA RED SOCIAL: index.html
+  "CP-ROS" - Plataforma comunitaria retro.
+
+  Propósito de este archivo:
+  1. Servir de portal de bienvenida para los usuarios y visitantes.
+  2. Permitir seleccionar y derivar directamente a los perfiles individuales:
+     - Perfil de Ulises -> ulises.html
+     - Perfil de Amir   -> amir.html
+  3. Contener la barra superior bien distribuida con Notificaciones, Solicitudes y Cerrar Sesión.
+  4. Mostrar el catálogo de juegos y la cuadrícula de amiguitos compartidos.
+  5. Documentación exhaustiva con anotaciones pedagógicas de cada elemento del código.
+-->
+<html lang="es">
+<head>
+  <!-- Codificación para caracteres en castellano (acentos, signos y eñes) -->
+  <meta charset="UTF-8">
+  <!-- Escala responsiva para dispositivos móviles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CP-ROS - Portal Principal y Perfiles de Usuario</title>
+  <!-- Carga de la hoja de estilos CSS compartida -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================================
+     SECCIÓN 1: BARRA DE NAVEGACIÓN SUPERIOR (TOP-BAR)
+     Propósito: Cabecera fija accesible en todo momento para interactuar con la red.
+     Distribuye ordenadamente el logotipo, alertas, solicitudes y la salida de sesión.
+     ========================================================================== -->
+<header class="top-bar">
+  <!-- Identidad de la marca y copyright -->
+  <div class="top-bar-left">
+    <a href="index.html" title="Inicio de CP-ROS">
+      🌐 <span>CP-ROS - © 2026 S&P</span>
+    </a>
+  </div>
+
+  <!-- Contenedor derecho: Botones interactivos de navegación -->
+  <div class="top-bar-right">
+    <nav class="top-bar-nav" aria-label="Menú superior de navegación">
+      <a href="index.html" title="Recargar página principal">🏠 Inicio</a>
+      <!-- Enlace modal para ver notificaciones con contador visual -->
+      <a href="#" class="btn-notificaciones" title="Ver notificaciones entrantes">
+        🔔 Notificaciones <span class="badge-count">3</span>
+      </a>
+      <!-- Enlace modal para solicitudes de amistad con contador visual -->
+      <a href="#" class="btn-solicitudes" title="Ver solicitudes pendientes">
+        👥 Solicitudes <span class="badge-count">1</span>
+      </a>
+      <!-- Enlace directo para salir o autenticarse en el sistema -->
+      <a href="login.html" id="btn-logout" class="btn-logout" title="Cerrar sesión o ir a ingreso">
+        🚪 Cerrar Sesión
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     SECCIÓN 2: CONTENEDOR PRINCIPAL EN DOS COLUMNAS
+     Propósito: Estructura dividida que contiene la selección de perfiles en la izquierda
+     y los juegos con la lista de amigos en la derecha.
+     ========================================================================== -->
+<main class="container">
+
+  <!-- ========================================================================
+       COLUMNA IZQUIERDA: TARJETAS DE ACCESO A LOS PERFILES CORRESPONDIENTES
+       Propósito: Derivar al visitante/usuario a ulises.html o amir.html
+       ======================================================================== -->
+  <aside class="columna-izquierda" aria-label="Perfiles de usuarios disponibles">
+
+    <!-- Tarjeta para el perfil de Ulises -->
+    <div class="caja">
+      <div class="caja-header">
+        <span>👤 Perfil: ulisesl+kpo</span>
+      </div>
+      <div class="caja-body text-center">
+        <div class="perfil-avatar-wrap">
+          <img src="img/hk.jpg" alt="Foto de perfil de Ulises" class="perfil-avatar" width="130" height="170">
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 8px 0;">
+          <strong>Estado:</strong> <span class="status-online">En línea</span><br>
+          <strong>Edad:</strong> eighteen years cuh<br>
+          <strong>Ubicación:</strong> tucuman, tero violado
+        </p>
+        <!-- Enlace que deriva al archivo HTML individual de Ulises -->
+        <a href="ulises.html" style="display: block; background: #4267b2; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 10px;">
+          👉 Abrir Perfil de Ulises »
+        </a>
+      </div>
+    </div>
+
+    <!-- Tarjeta para el perfil de Amir -->
+    <div class="caja">
+      <div class="caja-header">
+        <span>👤 Perfil: amir1234</span>
+      </div>
+      <div class="caja-body text-center">
+        <div class="perfil-avatar-wrap">
+          <img src="img/mesi.jpg" alt="Foto de perfil de Amir" class="perfil-avatar" width="130" height="170">
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 8px 0;">
+          <!-- Requisito explícito: Estado de Amir "Desconectado" -->
+          <strong>Estado:</strong> <span class="status-offline">Desconectado</span><br>
+          <strong>Edad:</strong> 18 Años<br>
+          <strong>Ubicación:</strong> Gral. Roca
+        </p>
+        <!-- Enlace que deriva al archivo HTML individual de Amir -->
+        <a href="amir.html" style="display: block; background: #34495e; color: white; padding: 8px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 10px;">
+          👉 Abrir Perfil de Amir »
+        </a>
+      </div>
+    </div>
+
+    <!-- Navegación de contactos rápida -->
+    <div class="caja">
+      <div class="caja-header">Navegación de Contactos</div>
+      <div class="caja-body">
+        <details open>
+          <summary>Acciones Rápidas</summary>
+          <ul>
+            <li><a href="#" class="btn-mensajes">✉️ Enviar un Mensaje</a></li>
+            <li><a href="#" class="btn-notificaciones">🔔 Ver Notificaciones</a></li>
+            <li><a href="#" class="btn-solicitudes">👥 Ver Solicitudes</a></li>
+            <li><a href="#" class="btn-amiguitos">🫂 Ver lista de Amigos</a></li>
+            <li><a href="login.html">🔑 Cambiar de Cuenta</a></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================================
+       COLUMNA DERECHA: CATÁLOGO DE JUEGOS Y CUADRÍCULA DE AMIGUITOS COMPARTIDOS
+       ======================================================================== -->
+  <section class="columna-derecha" aria-label="Catálogo de juegos y amigos de la red">
+
+    <!-- SECCIÓN JUEGOS Y APLICACIONES -->
+    <div class="caja" id="seccion-juegos">
+      <div class="caja-header">🎮 Mis Juegos y Aplicaciones</div>
+      <div class="caja-body">
+        <table class="lista-juegos" summary="Catálogo de juegos compartidos en la red">
+
+          <!-- Minecraft 3 -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/minecraft clone.jpg" alt="Minecraft 3" width="50" height="50"><br>MC3
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="minecraft3.html">minecraft3</a></div>
+              <div class="juego-desc">¡Rango Constructor Maestro! Pelea el #1 contra Shadow y forja la Armadura de Netherite Legendaria con Protección Cósmica derrotando al Wither de Diamante.</div>
+            </td>
+          </tr>
+
+          <!-- Gun 2.0 -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/gun2.0.png" alt="Gun 2.0" width="50" height="50"><br>GUN
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="gun2.0.html">gun2.0</a></div>
+              <div class="juego-desc">¡Operaciones de élite con Batistuta y Ghost-Ulises! Usa 4,500 balas, saca 25 bajas en Refinería Nuclear y desbloquea el Subfusil Láser MK-II.</div>
+            </td>
+          </tr>
+
+          <!-- Skate 2 -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/gonogld.jpg" alt="Skate 2" width="50" height="50"><br>SKATE 2
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="skate2.html">skate 2</a></div>
+              <div class="juego-desc">¡Team Pro con Foy, P-Rod, Joslin, Milton, Bam y Messi! Tira el switch half-cab heelflip bajando la lyon twenty five, cayendo sobre los ocho tornillos y desbloquea la Impact Legendaria para que las wachas se te tiren encima.</div>
+            </td>
+          </tr>
+
+          <!-- Eyes Doom -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/eyes doom.jpg" alt="Eyes Doom" width="50" height="50"><br>DOOM
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="eyes-doom.html">eyes doom</a></div>
+              <div class="juego-desc">¡Récord Nivel 45 en el abismo cósmico! Enfrenta al Ojo Primordial, conecta un combo de 99 golpes sin pestañear y desbloquea el Ojo del Caos Supremo Legendario.</div>
+            </td>
+          </tr>
+
+          <!-- Blue Spiral -->
+          <tr>
+            <td width="65" class="juego-icono">
+              <img src="img/blue spiral.jpg" alt="Blue Spiral" width="50" height="50"><br>SPIRAL
+            </td>
+            <td>
+              <div class="juego-titulo"><a href="blue-spiral.html">blue spiral</a></div>
+              <div class="juego-desc">¡Evolución de mascotas con Ulises, Amir y Fede P! Recarga 10,000 Watios de amistad cuántica para desbloquear la Evolución Omega Espiral Legendaria con Alas de Luz.</div>
+            </td>
+          </tr>
+
+        </table>
+
+        <div class="ver-directorio">
+          <a href="#">Ver Directorio de Juegos »</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN AMIGUITOS: Cuadrícula con los mismos 6 amigos -->
+    <div class="caja" id="seccion-amiguitos">
+      <div class="caja-header">
+        <span>🫂 Amiguitos en la Red (6)</span>
+        <a href="#" class="btn-amiguitos" style="font-size: 11px; color: #3b5998; text-decoration: none;">Ver todos</a>
+      </div>
+      <div class="caja-body grid-amigos">
+
+        <!-- Amigo 1 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('img/fede p.jpeg')" title="fede p"></div>
+          <div class="amigo-nombre">fede p</div>
+          <span class="status-online">Online</span>
+        </div>
+
+        <!-- Amigo 2 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=2')" title="el niño torres"></div>
+          <div class="amigo-nombre">el niño torres</div>
+          <span class="status-online">Online</span>
+        </div>
+
+        <!-- Amigo 3 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=3')" title="rompeviejas747"></div>
+          <div class="amigo-nombre">rompeviejas747</div>
+          <span class="status-offline">Offline</span>
+        </div>
+
+        <!-- Amigo 4 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=4')" title="tukito"></div>
+          <div class="amigo-nombre">tukito</div>
+          <span class="status-online">Online</span>
+        </div>
+
+        <!-- Amigo 5 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=5')" title="Batistuta"></div>
+          <div class="amigo-nombre">Batistuta</div>
+          <span class="status-offline">Offline</span>
+        </div>
+
+        <!-- Amigo 6 -->
+        <div class="amigo-item">
+          <div class="amigo-pic" style="background-image: url('https://i.pravatar.cc/60?u=6')" title="Serafio"></div>
+          <div class="amigo-nombre">Serafio</div>
+          <span class="status-offline">Offline</span>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ==========================================================================
+     VENTANA MODAL REUTILIZABLE PARA PANELES EMERGENTES
+     ========================================================================== -->
+<div id="modal-container" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <div class="caja-header">
+      <span id="modal-title">Título</span>
+      <button class="close-modal" aria-label="Cerrar modal" style="float: right;">✕</button>
+    </div>
+    <div class="caja-body" id="modal-body">
+      <!-- Inyectado por JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Script interactivo común de la aplicación -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
