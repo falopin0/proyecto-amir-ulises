@@ -1,0 +1,1 @@
+cuando vayan a querer ejecutar el sitio web, no lo ejecuten desde el index.html, primero carguen el LOGIN.html y despues me cuentan que onda pq si no estan haceidno todo como quieren y como se les canta
