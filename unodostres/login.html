@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <!--
-  PÁGINA DE ACCESO E INICIO DE SESIÓN (login.html)
-  Esta página permite a los usuarios iniciar sesión en CP-ROS ingresando sus credenciales
-  (usuario y contraseña). El formulario envía los datos al backend PHP (php/api/login.php)
-  mediante AJAX (fetch API), que valida contra la tabla inicio_sesion de la base de datos.
-  También se mantienen los accesos directos a perfiles para compatibilidad y pruebas.
-  Todo el archivo está completamente anotado y comentado explicando el porqué de cada etiqueta y función.
+  PÁGINA DE ACCESO, INICIO DE SESIÓN Y REGISTRO DE CUENTA (login.html)
+  Esta página permite a los usuarios:
+  1. Iniciar sesión con credenciales existentes (usuario + contraseña) → envía a php/api/login.php
+  2. Crear una cuenta nueva (registro) con nombre, usuario, contraseña y correo → envía a php/api/registro.php
+  Ambos formularios envían los datos al backend PHP mediante AJAX (fetch API) y procesan la respuesta JSON.
+  Se mantienen los accesos directos a perfiles para compatibilidad y pruebas.
 -->
 <html lang="es">
 <head>
-  <!-- Definición del juego de caracteres UTF-8 para soporte de tildes y símbolos -->
   <meta charset="UTF-8">
-  <!-- Viewport para visualización responsiva correcta en pantallas móviles y de escritorio -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CP-ROS - Iniciar Sesión</title>
-  <!-- Enlace a la hoja de estilos global con la estética de red social vintage -->
+  <title>CP-ROS - Iniciar Sesión / Registrarse</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <!-- ==========================================================================
      BARRA SUPERIOR DE ENCABEZADO (TOP-BAR)
-     Propósito: Muestra el logotipo de la marca y enlaces directos de navegación.
      ========================================================================== -->
 <header class="top-bar">
   <div class="top-bar-left">
@@ -39,55 +35,154 @@
 </header>
 
 <!-- ==========================================================================
-     CONTENEDOR CENTRAL DE INICIO DE SESIÓN (CONTAINER)
-     Propósito: Caja centrada con formulario de login que se conecta al backend PHP
-     y también opciones de acceso directo a perfiles.
+     CONTENEDOR CENTRAL DE LOGIN Y REGISTRO
      ========================================================================== -->
 <main class="container container-login">
 
-  <h2>🔐 Iniciar Sesión en CP-ROS</h2>
+  <h2>🔐 Bienvenido a CP-ROS</h2>
 
   <!-- ======================================================================
-       FORMULARIO DE LOGIN CON CONEXIÓN A BASE DE DATOS
-       El formulario envía las credenciales al endpoint php/api/login.php
-       mediante JavaScript (fetch API). La validación se hace en el servidor.
+       PESTAÑA DE NAVEGACIÓN ENTRE LOGIN Y REGISTRO
+       Dos botones que alternan la visibilidad de los formularios.
        ====================================================================== -->
-  <div class="caja">
+  <div style="display: flex; max-width: 400px; margin: 0 auto 0 auto;">
+    <button type="button" id="tab-login" onclick="mostrarSeccion('login')"
+            style="flex: 1; padding: 10px; font-size: 14px; font-weight: bold; cursor: pointer; background: #3b5998; color: white; border: 1px solid #2d4373; border-bottom: none; border-radius: 6px 6px 0 0;">
+      🔑 Iniciar Sesión
+    </button>
+    <button type="button" id="tab-registro" onclick="mostrarSeccion('registro')"
+            style="flex: 1; padding: 10px; font-size: 14px; font-weight: bold; cursor: pointer; background: #e9ecef; color: #555; border: 1px solid #bdc3c7; border-bottom: none; border-radius: 6px 6px 0 0;">
+      📝 Crear Cuenta
+    </button>
+  </div>
+
+  <!-- ======================================================================
+       SECCIÓN 1: FORMULARIO DE INICIO DE SESIÓN (LOGIN)
+       Envía las credenciales al endpoint php/api/login.php mediante fetch.
+       ====================================================================== -->
+  <div id="seccion-login" class="caja" style="border-radius: 0 0 6px 6px; margin-top: 0;">
     <div class="caja-header">
       <span>Ingresar con Usuario y Contraseña</span>
     </div>
     <div class="caja-body">
 
-      <!-- Formulario de inicio de sesión — los datos se envían vía AJAX al backend PHP -->
-      <form id="form-login" autocomplete="off" style="max-width: 320px; margin: 0 auto;">
+      <form id="form-login" autocomplete="off" style="max-width: 340px; margin: 0 auto;">
 
-        <!-- Campo de nombre de usuario -->
+        <!-- Campo de nombre de usuario para login -->
         <div style="margin-bottom: 12px;">
-          <label for="usuario_login" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+          <label for="login_usuario" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
             👤 Usuario:
           </label>
-          <input type="text" id="usuario_login" name="usuario_login" required
+          <input type="text" id="login_usuario" name="usuario_login" required
                  placeholder="Ej: ulisesl+kpo o amir1234"
                  style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
         </div>
 
-        <!-- Campo de contraseña -->
+        <!-- Campo de contraseña para login -->
         <div style="margin-bottom: 14px;">
-          <label for="contrasena" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+          <label for="login_contrasena" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
             🔒 Contraseña:
           </label>
-          <input type="password" id="contrasena" name="contrasena" required
+          <input type="password" id="login_contrasena" name="contrasena" required
                  placeholder="Ingrese su contraseña"
                  style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
         </div>
 
-        <!-- Botón de envío del formulario -->
+        <!-- Botón de envío -->
         <button type="submit" style="width: 100%; background: #3b5998; color: white; padding: 12px; border: none; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
           🔑 Iniciar Sesión
         </button>
 
-        <!-- Mensaje de error/éxito que se muestra dinámicamente mediante JavaScript -->
+        <!-- Mensaje de estado dinámico -->
         <div id="login-mensaje" style="margin-top: 12px; font-size: 13px; text-align: center; display: none;"></div>
+
+        <!-- Enlace para ir al registro -->
+        <p style="text-align: center; margin-top: 14px; font-size: 13px; color: #555;">
+          ¿No tenés cuenta? <a href="#" onclick="mostrarSeccion('registro'); return false;" style="color: #3b5998; font-weight: bold;">Crear una cuenta nueva</a>
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       SECCIÓN 2: FORMULARIO DE REGISTRO DE CUENTA NUEVA
+       Envía los datos al endpoint php/api/registro.php mediante fetch.
+       Crea registros en las tablas: usuario, inicio_sesion, actividad_usuario, registro.
+       ====================================================================== -->
+  <div id="seccion-registro" class="caja" style="border-radius: 0 0 6px 6px; margin-top: 0; display: none;">
+    <div class="caja-header">
+      <span>📝 Crear una Cuenta Nueva en CP-ROS</span>
+    </div>
+    <div class="caja-body">
+
+      <form id="form-registro" autocomplete="off" style="max-width: 340px; margin: 0 auto;">
+
+        <!-- Campo: Nombre de usuario (público, se muestra en el perfil) -->
+        <div style="margin-bottom: 12px;">
+          <label for="reg_nombre" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            👤 Nombre de Usuario (público):
+          </label>
+          <input type="text" id="reg_nombre" name="nombre_usuario" required minlength="3" maxlength="50"
+                 placeholder="Ej: MiNombreGenial"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+          <small style="color: #888; font-size: 11px;">Este nombre se mostrará en tu perfil público.</small>
+        </div>
+
+        <!-- Campo: Usuario de login (para iniciar sesión) -->
+        <div style="margin-bottom: 12px;">
+          <label for="reg_login" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            🔑 Usuario de Login:
+          </label>
+          <input type="text" id="reg_login" name="usuario_login" required minlength="3" maxlength="50"
+                 placeholder="Ej: minombre123"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+          <small style="color: #888; font-size: 11px;">Este nombre se usa para iniciar sesión (puede ser diferente al público).</small>
+        </div>
+
+        <!-- Campo: Correo electrónico -->
+        <div style="margin-bottom: 12px;">
+          <label for="reg_correo" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            📧 Correo Electrónico:
+          </label>
+          <input type="email" id="reg_correo" name="correo" required
+                 placeholder="Ej: tucorreo@gmail.com"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+        </div>
+
+        <!-- Campo: Contraseña -->
+        <div style="margin-bottom: 12px;">
+          <label for="reg_contrasena" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            🔒 Contraseña:
+          </label>
+          <input type="password" id="reg_contrasena" name="contrasena" required minlength="4"
+                 placeholder="Mínimo 4 caracteres"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+        </div>
+
+        <!-- Campo: Repetir contraseña -->
+        <div style="margin-bottom: 14px;">
+          <label for="reg_contrasena2" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            🔒 Repetir Contraseña:
+          </label>
+          <input type="password" id="reg_contrasena2" name="contrasena2" required minlength="4"
+                 placeholder="Repetí tu contraseña"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+        </div>
+
+        <!-- Botón de envío -->
+        <button type="submit" style="width: 100%; background: #27ae60; color: white; padding: 12px; border: none; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+          📝 Crear Mi Cuenta
+        </button>
+
+        <!-- Mensaje de estado dinámico -->
+        <div id="registro-mensaje" style="margin-top: 12px; font-size: 13px; text-align: center; display: none;"></div>
+
+        <!-- Enlace para volver al login -->
+        <p style="text-align: center; margin-top: 14px; font-size: 13px; color: #555;">
+          ¿Ya tenés cuenta? <a href="#" onclick="mostrarSeccion('login'); return false;" style="color: #3b5998; font-weight: bold;">Iniciar Sesión</a>
+        </p>
 
       </form>
 
@@ -108,12 +203,10 @@
       </p>
 
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 0 auto;">
-        <!-- Opción para abrir el perfil de Ulises -->
         <a href="ulises.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #4267b2; color: white; padding: 12px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           👉 Abrir Perfil de Ulises (ulisesl+kpo) »
         </a>
 
-        <!-- Opción para abrir el perfil de Amir -->
         <a href="amir.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #2b8a3e; color: white; padding: 12px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           👉 Abrir Perfil de Amir (amir1234) »
         </a>
@@ -136,25 +229,46 @@
 </main>
 
 <!-- ==========================================================================
-     SCRIPT DE LOGIN: Envía las credenciales al backend PHP vía fetch (AJAX)
-     y procesa la respuesta JSON para redirigir al perfil correspondiente.
+     SCRIPTS: Lógica de pestañas, login y registro
      ========================================================================== -->
 <script>
 /**
- * Controlador del formulario de login.
- * Captura el evento submit, envía los datos al endpoint php/api/login.php
- * y maneja la respuesta (redirección al perfil o mensaje de error).
+ * Función para alternar entre la sección de Login y la de Registro.
+ * @param {string} seccion — 'login' o 'registro'
  */
+function mostrarSeccion(seccion) {
+  const secLogin    = document.getElementById('seccion-login');
+  const secRegistro = document.getElementById('seccion-registro');
+  const tabLogin    = document.getElementById('tab-login');
+  const tabRegistro = document.getElementById('tab-registro');
+
+  if (seccion === 'registro') {
+    secLogin.style.display    = 'none';
+    secRegistro.style.display = 'block';
+    tabLogin.style.background    = '#e9ecef';
+    tabLogin.style.color         = '#555';
+    tabRegistro.style.background = '#27ae60';
+    tabRegistro.style.color      = 'white';
+  } else {
+    secLogin.style.display    = 'block';
+    secRegistro.style.display = 'none';
+    tabLogin.style.background    = '#3b5998';
+    tabLogin.style.color         = 'white';
+    tabRegistro.style.background = '#e9ecef';
+    tabRegistro.style.color      = '#555';
+  }
+}
+
+// =========================================================================
+// FORMULARIO DE LOGIN: Envía credenciales a php/api/login.php
+// =========================================================================
 document.getElementById('form-login').addEventListener('submit', async function(e) {
-  // Prevenir el envío tradicional del formulario (recarga de página)
   e.preventDefault();
 
-  // Obtener los valores ingresados por el usuario
-  const usuarioLogin = document.getElementById('usuario_login').value.trim();
-  const contrasena   = document.getElementById('contrasena').value;
+  const usuarioLogin = document.getElementById('login_usuario').value.trim();
+  const contrasena   = document.getElementById('login_contrasena').value;
   const mensajeDiv   = document.getElementById('login-mensaje');
 
-  // Validación básica en el cliente antes de enviar al servidor
   if (!usuarioLogin || !contrasena) {
     mensajeDiv.style.display = 'block';
     mensajeDiv.style.color = '#e74c3c';
@@ -162,13 +276,11 @@ document.getElementById('form-login').addEventListener('submit', async function(
     return;
   }
 
-  // Mostrar indicador de carga mientras se procesa la petición
   mensajeDiv.style.display = 'block';
   mensajeDiv.style.color = '#555';
   mensajeDiv.textContent = '⏳ Verificando credenciales...';
 
   try {
-    // Enviar las credenciales al endpoint PHP mediante fetch (POST con JSON)
     const respuesta = await fetch('php/api/login.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -178,41 +290,116 @@ document.getElementById('form-login').addEventListener('submit', async function(
       })
     });
 
-    // Parsear la respuesta JSON del servidor
     const datos = await respuesta.json();
 
     if (datos.exito) {
-      // Login exitoso: mostrar mensaje de bienvenida y redirigir al perfil
       mensajeDiv.style.color = '#27ae60';
       mensajeDiv.textContent = '✅ ¡Bienvenido, ' + datos.usuario.nombre_usuario + '! Redirigiendo...';
 
-      // Guardar datos básicos del usuario en sessionStorage para uso del frontend
+      // Guardar datos del usuario en sessionStorage para uso del frontend
       sessionStorage.setItem('cpros_usuario', JSON.stringify(datos.usuario));
 
-      // Redirigir al perfil del usuario después de un breve momento
+      // Redirigir al perfil correspondiente
       setTimeout(function() {
-        // Determinar la página de perfil según el nombre de usuario
         const nombre = datos.usuario.nombre_usuario.toLowerCase();
         if (nombre.includes('ulises')) {
           window.location.href = 'ulises.html';
         } else if (nombre.includes('amir')) {
           window.location.href = 'amir.html';
         } else {
+          // Para usuarios nuevos que no son ulises ni amir, ir al index
           window.location.href = 'index.html';
         }
       }, 1200);
 
     } else {
-      // Credenciales incorrectas: mostrar mensaje de error
       mensajeDiv.style.color = '#e74c3c';
       mensajeDiv.textContent = '❌ ' + datos.mensaje;
     }
 
   } catch (error) {
-    // Error de red o del servidor: informar al usuario
     mensajeDiv.style.color = '#e74c3c';
     mensajeDiv.textContent = '❌ Error de conexión con el servidor. Verifique que el backend PHP esté activo.';
     console.error('Error en login:', error);
+  }
+});
+
+// =========================================================================
+// FORMULARIO DE REGISTRO: Envía datos a php/api/registro.php
+// =========================================================================
+document.getElementById('form-registro').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const nombre      = document.getElementById('reg_nombre').value.trim();
+  const login       = document.getElementById('reg_login').value.trim();
+  const correo      = document.getElementById('reg_correo').value.trim();
+  const contrasena  = document.getElementById('reg_contrasena').value;
+  const contrasena2 = document.getElementById('reg_contrasena2').value;
+  const mensajeDiv  = document.getElementById('registro-mensaje');
+
+  // Validar campos vacíos
+  if (!nombre || !login || !correo || !contrasena || !contrasena2) {
+    mensajeDiv.style.display = 'block';
+    mensajeDiv.style.color = '#e74c3c';
+    mensajeDiv.textContent = '⚠️ Todos los campos son obligatorios.';
+    return;
+  }
+
+  // Validar que las contraseñas coincidan
+  if (contrasena !== contrasena2) {
+    mensajeDiv.style.display = 'block';
+    mensajeDiv.style.color = '#e74c3c';
+    mensajeDiv.textContent = '⚠️ Las contraseñas no coinciden.';
+    return;
+  }
+
+  // Validar largo mínimo de contraseña
+  if (contrasena.length < 4) {
+    mensajeDiv.style.display = 'block';
+    mensajeDiv.style.color = '#e74c3c';
+    mensajeDiv.textContent = '⚠️ La contraseña debe tener al menos 4 caracteres.';
+    return;
+  }
+
+  mensajeDiv.style.display = 'block';
+  mensajeDiv.style.color = '#555';
+  mensajeDiv.textContent = '⏳ Creando tu cuenta...';
+
+  try {
+    const respuesta = await fetch('php/api/registro.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre_usuario: nombre,
+        usuario_login: login,
+        contrasena: contrasena,
+        correo: correo
+      })
+    });
+
+    const datos = await respuesta.json();
+
+    if (datos.exito) {
+      mensajeDiv.style.color = '#27ae60';
+      mensajeDiv.innerHTML = '✅ ' + datos.mensaje + '<br><b>Ya puedes iniciar sesión con tu usuario y contraseña.</b>';
+
+      // Limpiar el formulario de registro
+      document.getElementById('form-registro').reset();
+
+      // Después de 3 segundos, cambiar automáticamente a la pestaña de login
+      setTimeout(function() {
+        mostrarSeccion('login');
+      }, 3000);
+
+    } else {
+      mensajeDiv.style.color = '#e74c3c';
+      mensajeDiv.textContent = '❌ ' + datos.mensaje;
+    }
+
+  } catch (error) {
+    mensajeDiv.style.color = '#e74c3c';
+    mensajeDiv.textContent = '❌ Error de conexión con el servidor. Verifique que el backend PHP esté activo.';
+    console.error('Error en registro:', error);
   }
 });
 </script>

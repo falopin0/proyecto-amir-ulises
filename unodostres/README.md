@@ -99,6 +99,7 @@ php/
 └── api/
     ├── login.php              # POST — Autenticación de usuario y creación de sesión PHP
     ├── logout.php             # POST — Cierre de sesión y actualización de estado a offline
+    ├── registro.php           # POST — Registro de cuenta nueva (inserta en 4 tablas con transacción)
     ├── sesion.php             # GET  — Verificar si el usuario tiene sesión activa
     ├── perfil.php             # GET  — Obtener datos completos de un perfil (?id= o ?nombre=)
     └── amigos.php             # GET/POST/PUT/DELETE — CRUD completo de amiguitos
@@ -110,6 +111,7 @@ php/
 | :--- | :--- | :--- | :--- |
 | `php/api/login.php` | `POST` | `{ usuario_login, contrasena }` | Valida credenciales contra la BD, inicia sesión PHP y retorna datos del perfil. |
 | `php/api/logout.php` | `POST` | — | Cierra la sesión, actualiza estado a "offline" y destruye la sesión PHP. |
+| `php/api/registro.php` | `POST` | `{ nombre_usuario, usuario_login, contrasena, correo }` | Crea una cuenta nueva: inserta en las tablas usuario, inicio_sesion, actividad_usuario y registro usando transacción SQL. |
 | `php/api/sesion.php` | `GET` | — | Verifica si existe sesión activa; retorna datos del usuario logueado o indica que no hay sesión. |
 | `php/api/perfil.php` | `GET` | `?id=<id>` o `?nombre=<nombre>` | Retorna datos completos del perfil: usuario + actividad + registro. |
 | `php/api/amigos.php` | `GET` | `?id_usuario=<id>` | Lista los amigos de un usuario con datos de perfil (JOIN con tabla usuario). |
@@ -142,7 +144,7 @@ define('DB_CHARSET', 'utf8mb4');         // Charset completo con soporte de emoj
 
 ### 🔄 Flujo de Autenticación (Login)
 
-1. El usuario ingresa su **usuario** y **contraseña** en el formulario de `login.html`.
+1. El usuario ingresa su **usuario** y **contraseña** en la pestaña "Iniciar Sesión" de `login.html`.
 2. El frontend envía los datos al endpoint `php/api/login.php` mediante `fetch` (AJAX con JSON).
 3. El backend busca al usuario en la tabla `inicio_sesion` y compara la contraseña convertida a hexadecimal con `contrasena_hex`.
 4. Si las credenciales son válidas:
@@ -150,15 +152,124 @@ define('DB_CHARSET', 'utf8mb4');         // Charset completo con soporte de emoj
    - Se actualiza el estado a **"online"** y se registra la fecha/hora del último login.
    - Se crea una sesión PHP (`$_SESSION`) con los datos del usuario.
    - Se retorna un JSON con `exito: true` y los datos del perfil.
-5. El frontend recibe la respuesta, muestra un mensaje de bienvenida y redirige al perfil correspondiente (`ulises.html` o `amir.html`).
+5. El frontend recibe la respuesta, muestra un mensaje de bienvenida y redirige al perfil correspondiente (`ulises.html`, `amir.html` o `index.html` para usuarios nuevos).
+
+### 📝 Flujo de Registro de Cuenta Nueva
+
+1. El usuario hace clic en la pestaña **"Crear Cuenta"** en `login.html`.
+2. Completa los 4 campos del formulario: **Nombre de Usuario** (público), **Usuario de Login**, **Correo Electrónico** y **Contraseña** (con confirmación).
+3. El frontend valida en el navegador (campos obligatorios, contraseñas coinciden, largo mínimo) y envía los datos al endpoint `php/api/registro.php` vía `fetch` (POST con JSON).
+4. El backend PHP ejecuta las siguientes validaciones:
+   - Verifica que el `usuario_login` no esté ya registrado en la tabla `inicio_sesion`.
+   - Verifica que el `correo` no esté ya en la tabla `registro`.
+   - Verifica que el `nombre_usuario` no exista en la tabla `usuario`.
+5. Si todo es válido, se ejecuta una **transacción SQL** que inserta registros en las 4 tablas:
+   - `usuario` → perfil público con avatar por defecto (`img/images.jpg`).
+   - `inicio_sesion` → credenciales con la contraseña convertida a hexadecimal.
+   - `actividad_usuario` → datos biográficos iniciales (estado "offline", edad y ubicación "Sin especificar").
+   - `registro` → correo, fecha de registro actual y estado de cuenta "activa".
+6. Si alguna inserción falla, se revierte toda la transacción (`ROLLBACK`) para mantener la integridad de datos.
+7. El frontend muestra un mensaje de éxito y automáticamente cambia a la pestaña de Login para que el usuario pueda ingresar con su cuenta recién creada.
+
+### 🔗 Integración Frontend ↔ Backend en los HTML
+
+Todos los archivos HTML del sitio están adaptados para comunicarse con el backend PHP:
+
+| Archivo HTML | Integración con PHP |
+| :--- | :--- |
+| `login.html` | Formulario de **Login** → `php/api/login.php` (POST). Formulario de **Registro** → `php/api/registro.php` (POST). Sistema de pestañas para alternar entre ambos. |
+| `ulises.html` | **Carga dinámica de perfil** desde la BD vía `php/api/perfil.php` (GET). **Logout real** vía `php/api/logout.php` (POST). Si el backend no está disponible, muestra los datos estáticos del HTML como fallback. |
+| `amir.html` | Igual que `ulises.html`: carga de perfil desde BD y logout real vía PHP con fallback estático. |
+| `index.html` | **Verifica sesión activa** vía `php/api/sesion.php` (GET). **Logout real** vía PHP. Muestra el nombre del usuario logueado en la barra superior. |
+
+**Flujo de datos en los perfiles (`ulises.html` / `amir.html`):**
+1. Al cargar la página, un script JavaScript llama a `php/api/perfil.php` con el nombre o ID del usuario.
+2. Si el servidor responde con datos, se actualizan dinámicamente: el nombre de usuario, avatar, estado (online/offline), edad, ubicación y último login.
+3. El botón "Cerrar Sesión" llama a `php/api/logout.php` para destruir la sesión PHP, limpia el `sessionStorage` del navegador y redirige a `login.html`.
+4. Si el backend no está disponible (por ejemplo, abriendo los HTML localmente sin servidor PHP), los datos estáticos escritos en el HTML se mantienen visibles sin errores.
 
 ### 🛡️ Seguridad Implementada
 
 - **PDO Prepared Statements:** Todas las consultas SQL usan parámetros preparados para prevenir inyecciones SQL.
-- **Validación de entrada:** Los datos recibidos se validan y sanitizan antes de procesarse.
+- **Validación de entrada:** Los datos recibidos se validan y sanitizan tanto en el frontend (HTML5 + JS) como en el backend (PHP).
+- **Transacciones SQL:** El registro de usuarios usa transacciones para garantizar la integridad de datos (todo se inserta o nada).
 - **Sesiones PHP seguras:** Se gestiona la autenticación mediante `$_SESSION` en el servidor.
 - **Manejo de errores:** Los errores de BD se registran en logs del servidor sin exponer información sensible al usuario.
 - **CORS configurado:** Los endpoints incluyen cabeceras de control de acceso para peticiones cross-origin.
+- **Fallback estático:** Si el backend no está activo, los HTML muestran sus datos estáticos sin errores de JavaScript.
+
+---
+
+## 🗃️ Conexión con HeidiSQL — Guía para Administrar la Base de Datos
+
+**HeidiSQL** es un programa gratuito para Windows que permite ver y editar la base de datos MySQL de manera visual (como una planilla). Sirve para agregar datos de prueba, verificar los registros y administrar las tablas sin escribir SQL a mano.
+
+### Paso a Paso para Conectar HeidiSQL con la BD de Hostinger
+
+1. **Descargar e instalar HeidiSQL:**
+   - Ir a [https://www.heidisql.com/download.php](https://www.heidisql.com/download.php) y descargar la versión más reciente.
+   - Instalarlo normalmente (siguiente, siguiente, finalizar).
+
+2. **Obtener los datos de conexión desde Hostinger:**
+   - Ingresar al panel de control de **Hostinger** → sección **Bases de datos** → **MySQL**.
+   - Anotar los siguientes datos que aparecen ahí:
+     - **Servidor/Host:** Generalmente es algo como `srv###.hstgr.io` o `localhost` (depende del plan). En el panel de Hostinger aparece como "Hostname del servidor MySQL".
+     - **Nombre de BD:** `u283509122_cyp`
+     - **Usuario de BD:** `u283509122_cyp`
+     - **Contraseña:** la que se haya configurado al crear la base de datos en Hostinger.
+     - **Puerto:** `3306` (es el puerto por defecto de MySQL).
+
+3. **Crear la conexión en HeidiSQL:**
+   - Abrir HeidiSQL → clic en **"Nueva"** (abajo a la izquierda) para crear una sesión nueva.
+   - Configurar los campos:
+     - **Tipo de red:** `MySQL (TCP/IP)`
+     - **Nombre del host / IP:** pegar el hostname que anotaste de Hostinger (ej: `srv1234.hstgr.io`)
+     - **Usuario:** `u283509122_cyp`
+     - **Contraseña:** la contraseña real de la BD
+     - **Puerto:** `3306`
+   - Clic en **"Abrir"** para conectarse.
+
+4. **Navegar las tablas:**
+   - En el panel izquierdo aparecerá la base de datos `u283509122_cyp`.
+   - Hacer clic en ella y se verán las 5 tablas: `usuario`, `inicio_sesion`, `actividad_usuario`, `amiguitos`, `registro`.
+   - Al hacer clic en cada tabla, se pueden ver los registros existentes en la pestaña **"Datos"**.
+
+5. **Insertar datos de prueba (ejemplo para las cuentas de Ulises y Amir):**
+   - Ir a la pestaña **"Consulta"** (o Query) y pegar los siguientes comandos SQL:
+
+```sql
+-- =============================================
+-- DATOS DE PRUEBA PARA CP-ROS
+-- Ejecutar estos INSERT en HeidiSQL para crear
+-- las cuentas de Ulises y Amir en la BD.
+-- =============================================
+
+-- 1. Insertar usuarios en la tabla 'usuario'
+INSERT INTO usuario (nombre_usuario, avatar, fondo) VALUES ('ulisesl+kpo', 'img/hk.jpg', '');
+INSERT INTO usuario (nombre_usuario, avatar, fondo) VALUES ('amir1234', 'img/mesi.jpg', '');
+
+-- 2. Insertar credenciales en 'inicio_sesion'
+--    Contraseña "12345" convertida a hexadecimal = "3132333435"
+INSERT INTO inicio_sesion (id_usuario, usuario_login, contrasena_hex) VALUES (1, 'ulisesl+kpo', '3132333435');
+INSERT INTO inicio_sesion (id_usuario, usuario_login, contrasena_hex) VALUES (2, 'amir1234', '3132333435');
+
+-- 3. Insertar actividad/datos biográficos en 'actividad_usuario'
+INSERT INTO actividad_usuario (id_usuario, estado, edad_texto, ubicacion, ultimo_login) VALUES (1, 'online', 'eighteen years cuh', 'tucuman, tero violado', '14/08/200X');
+INSERT INTO actividad_usuario (id_usuario, estado, edad_texto, ubicacion, ultimo_login) VALUES (2, 'offline', '18 Años', 'Gral. Roca', 'mañana');
+
+-- 4. Insertar registros de cuenta en 'registro'
+INSERT INTO registro (id_usuario, correo_electronico, fecha_registro, estado_cuenta) VALUES (1, 'ulises@cpros.com', NOW(), 'activa');
+INSERT INTO registro (id_usuario, correo_electronico, fecha_registro, estado_cuenta) VALUES (2, 'amir@cpros.com', NOW(), 'activa');
+```
+
+   - Seleccionar todo el texto y presionar **F9** (o el botón ▶️ "Ejecutar") para insertar los datos.
+
+6. **Verificar:**
+   - Hacer clic en la tabla `usuario` → pestaña "Datos" → deberían aparecer los 2 usuarios.
+   - Hacer clic en `inicio_sesion` → deberían verse las credenciales.
+   - Ahora al ir a `login.html` en el hosting y escribir `ulisesl+kpo` con contraseña `12345`, debería funcionar el login.
+
+> **⚠️ Nota sobre el Host remoto:** Para conectarte desde HeidiSQL a Hostinger, el hosting debe tener habilitado el **acceso remoto MySQL**. En Hostinger esto se configura en: Panel de control → Bases de datos → Acceso remoto MySQL → agregar tu IP (o `%` para cualquier IP, pero esto es menos seguro). Si solo necesitas administrar desde el propio hosting, podés usar **phpMyAdmin** que viene incluido en el panel de Hostinger (no necesita HeidiSQL).
 
 ---
 
@@ -196,7 +307,7 @@ Las siguientes mejoras están planificadas para próximas versiones:
 unodostres/
 ├── README.md               # Documentación general y planificación de actualizaciones
 ├── index.html              # Portada principal y acceso a perfiles
-├── login.html              # Pantalla de login con formulario conectado al backend PHP
+├── login.html              # Pantalla de login + registro con formularios conectados al backend PHP
 ├── ulises.html             # Perfil individual de Ulises (ulisesl+kpo)
 ├── amir.html               # Perfil individual de Amir (amir1234)
 ├── blue-spiral.html        # Vista y lanzador del juego Blue Spiral
@@ -223,6 +334,7 @@ unodostres/
 │   └── api/
 │       ├── login.php       #   Endpoint POST: autenticación y sesión
 │       ├── logout.php      #   Endpoint POST: cierre de sesión
+│       ├── registro.php    #   Endpoint POST: registro de cuenta nueva (transacción en 4 tablas)
 │       ├── sesion.php      #   Endpoint GET: verificar sesión activa
 │       ├── perfil.php      #   Endpoint GET: datos completos del perfil
 │       └── amigos.php      #   Endpoint CRUD: gestión de amiguitos

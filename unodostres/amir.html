@@ -264,5 +264,81 @@
 <!-- Carga del archivo JavaScript principal con toda la lógica interactiva -->
 <script src="js/app.js"></script>
 
+<!-- ==========================================================================
+     SCRIPT DE INTEGRACIÓN CON BACKEND PHP
+     Carga los datos del perfil desde la BD (si hay sesión activa) y gestiona
+     el cierre de sesión real a través del endpoint php/api/logout.php.
+     Los datos estáticos del HTML se mantienen como fallback si no hay conexión.
+     ========================================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // --- LOGOUT REAL VÍA PHP ---
+  const btnLogout = document.getElementById('btn-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', async function(e) {
+      e.preventDefault();
+      try {
+        await fetch('php/api/logout.php', { method: 'POST' });
+      } catch (err) {
+        console.warn('No se pudo contactar al servidor para logout:', err);
+      }
+      sessionStorage.removeItem('cpros_usuario');
+      window.location.href = 'login.html';
+    });
+  }
+
+  // --- CARGA DINÁMICA DEL PERFIL DESDE LA BASE DE DATOS ---
+  async function cargarPerfilDesdeBD() {
+    try {
+      const usuario = sessionStorage.getItem('cpros_usuario');
+      let url = 'php/api/perfil.php?nombre=amir1234';
+
+      if (usuario) {
+        const datosUsuario = JSON.parse(usuario);
+        if (datosUsuario.id_usuario) {
+          url = 'php/api/perfil.php?id=' + datosUsuario.id_usuario;
+        }
+      }
+
+      const respuesta = await fetch(url);
+      const datos = await respuesta.json();
+
+      if (datos.exito && datos.datos) {
+        const perfil = datos.datos;
+
+        const h2 = document.querySelector('.columna-izquierda h2');
+        if (h2 && perfil.nombre_usuario) h2.textContent = perfil.nombre_usuario;
+
+        const avatar = document.querySelector('.perfil-avatar');
+        if (avatar && perfil.avatar) avatar.src = perfil.avatar;
+
+        if (perfil.estado || perfil.edad_texto || perfil.ubicacion || perfil.ultimo_login) {
+          const infoP = document.querySelector('.perfil-info p');
+          if (infoP) {
+            const estadoClase = (perfil.estado === 'online') ? 'status-online' : 'status-offline';
+            const estadoTexto = (perfil.estado === 'online') ? 'En línea' : 'Desconectado';
+            infoP.innerHTML =
+              '<strong>Estado:</strong> <span class="' + estadoClase + '">' + estadoTexto + '</span><br>' +
+              '<strong>Edad:</strong> ' + (perfil.edad_texto || 'Sin especificar') + '<br>' +
+              '<strong>Ubicación:</strong> ' + (perfil.ubicacion || 'Sin especificar') + '<br>' +
+              '<strong>Último Login:</strong> ' + (perfil.ultimo_login || 'Sin registro');
+          }
+        }
+
+        const topUser = document.querySelector('.top-bar-user');
+        if (topUser && perfil.nombre_usuario) topUser.textContent = '👤 ' + perfil.nombre_usuario;
+
+        console.log('✅ Perfil de Amir cargado desde la base de datos.');
+      }
+    } catch (error) {
+      console.info('ℹ️ Backend no disponible. Se muestran los datos estáticos del perfil.');
+    }
+  }
+
+  cargarPerfilDesdeBD();
+});
+</script>
+
 </body>
 </html>
