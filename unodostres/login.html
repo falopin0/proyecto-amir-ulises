@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!--
-  PÁGINA DE ACCESO Y DERIVACIÓN A PERFILES (login.html)
-  Esta página permite a los usuarios acceder directamente a los perfiles individuales:
-  - Perfil de Ulises -> ulises.html
-  - Perfil de Amir   -> amir.html
+  PÁGINA DE ACCESO E INICIO DE SESIÓN (login.html)
+  Esta página permite a los usuarios iniciar sesión en CP-ROS ingresando sus credenciales
+  (usuario y contraseña). El formulario envía los datos al backend PHP (php/api/login.php)
+  mediante AJAX (fetch API), que valida contra la tabla inicio_sesion de la base de datos.
+  También se mantienen los accesos directos a perfiles para compatibilidad y pruebas.
   Todo el archivo está completamente anotado y comentado explicando el porqué de cada etiqueta y función.
 -->
 <html lang="es">
@@ -38,21 +39,72 @@
 </header>
 
 <!-- ==========================================================================
-     CONTENEDOR CENTRAL DE ACCESO A PERFILES (CONTAINER)
-     Propósito: Caja centrada en la pantalla que aloja las opciones para abrir los perfiles.
+     CONTENEDOR CENTRAL DE INICIO DE SESIÓN (CONTAINER)
+     Propósito: Caja centrada con formulario de login que se conecta al backend PHP
+     y también opciones de acceso directo a perfiles.
      ========================================================================== -->
 <main class="container container-login">
 
   <h2>🔐 Iniciar Sesión en CP-ROS</h2>
 
+  <!-- ======================================================================
+       FORMULARIO DE LOGIN CON CONEXIÓN A BASE DE DATOS
+       El formulario envía las credenciales al endpoint php/api/login.php
+       mediante JavaScript (fetch API). La validación se hace en el servidor.
+       ====================================================================== -->
   <div class="caja">
     <div class="caja-header">
-      <span>Seleccionar Perfil para Ingresar</span>
+      <span>Ingresar con Usuario y Contraseña</span>
+    </div>
+    <div class="caja-body">
+
+      <!-- Formulario de inicio de sesión — los datos se envían vía AJAX al backend PHP -->
+      <form id="form-login" autocomplete="off" style="max-width: 320px; margin: 0 auto;">
+
+        <!-- Campo de nombre de usuario -->
+        <div style="margin-bottom: 12px;">
+          <label for="usuario_login" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            👤 Usuario:
+          </label>
+          <input type="text" id="usuario_login" name="usuario_login" required
+                 placeholder="Ej: ulisesl+kpo o amir1234"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+        </div>
+
+        <!-- Campo de contraseña -->
+        <div style="margin-bottom: 14px;">
+          <label for="contrasena" style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 4px; color: #333;">
+            🔒 Contraseña:
+          </label>
+          <input type="password" id="contrasena" name="contrasena" required
+                 placeholder="Ingrese su contraseña"
+                 style="width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+        </div>
+
+        <!-- Botón de envío del formulario -->
+        <button type="submit" style="width: 100%; background: #3b5998; color: white; padding: 12px; border: none; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+          🔑 Iniciar Sesión
+        </button>
+
+        <!-- Mensaje de error/éxito que se muestra dinámicamente mediante JavaScript -->
+        <div id="login-mensaje" style="margin-top: 12px; font-size: 13px; text-align: center; display: none;"></div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       ACCESOS DIRECTOS A PERFILES (mantienen compatibilidad con versión anterior)
+       ====================================================================== -->
+  <div class="caja" style="margin-top: 16px;">
+    <div class="caja-header">
+      <span>Acceso Directo a Perfiles</span>
     </div>
     <div class="caja-body text-center">
 
       <p style="font-size: 13px; color: #555; margin-bottom: 16px;">
-        Selecciona uno de los perfiles disponibles para ingresar directamente a su espacio personal:
+        También puedes acceder directamente a los perfiles sin login:
       </p>
 
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 0 auto;">
@@ -82,6 +134,88 @@
   </div>
 
 </main>
+
+<!-- ==========================================================================
+     SCRIPT DE LOGIN: Envía las credenciales al backend PHP vía fetch (AJAX)
+     y procesa la respuesta JSON para redirigir al perfil correspondiente.
+     ========================================================================== -->
+<script>
+/**
+ * Controlador del formulario de login.
+ * Captura el evento submit, envía los datos al endpoint php/api/login.php
+ * y maneja la respuesta (redirección al perfil o mensaje de error).
+ */
+document.getElementById('form-login').addEventListener('submit', async function(e) {
+  // Prevenir el envío tradicional del formulario (recarga de página)
+  e.preventDefault();
+
+  // Obtener los valores ingresados por el usuario
+  const usuarioLogin = document.getElementById('usuario_login').value.trim();
+  const contrasena   = document.getElementById('contrasena').value;
+  const mensajeDiv   = document.getElementById('login-mensaje');
+
+  // Validación básica en el cliente antes de enviar al servidor
+  if (!usuarioLogin || !contrasena) {
+    mensajeDiv.style.display = 'block';
+    mensajeDiv.style.color = '#e74c3c';
+    mensajeDiv.textContent = '⚠️ Complete ambos campos para continuar.';
+    return;
+  }
+
+  // Mostrar indicador de carga mientras se procesa la petición
+  mensajeDiv.style.display = 'block';
+  mensajeDiv.style.color = '#555';
+  mensajeDiv.textContent = '⏳ Verificando credenciales...';
+
+  try {
+    // Enviar las credenciales al endpoint PHP mediante fetch (POST con JSON)
+    const respuesta = await fetch('php/api/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        usuario_login: usuarioLogin,
+        contrasena: contrasena
+      })
+    });
+
+    // Parsear la respuesta JSON del servidor
+    const datos = await respuesta.json();
+
+    if (datos.exito) {
+      // Login exitoso: mostrar mensaje de bienvenida y redirigir al perfil
+      mensajeDiv.style.color = '#27ae60';
+      mensajeDiv.textContent = '✅ ¡Bienvenido, ' + datos.usuario.nombre_usuario + '! Redirigiendo...';
+
+      // Guardar datos básicos del usuario en sessionStorage para uso del frontend
+      sessionStorage.setItem('cpros_usuario', JSON.stringify(datos.usuario));
+
+      // Redirigir al perfil del usuario después de un breve momento
+      setTimeout(function() {
+        // Determinar la página de perfil según el nombre de usuario
+        const nombre = datos.usuario.nombre_usuario.toLowerCase();
+        if (nombre.includes('ulises')) {
+          window.location.href = 'ulises.html';
+        } else if (nombre.includes('amir')) {
+          window.location.href = 'amir.html';
+        } else {
+          window.location.href = 'index.html';
+        }
+      }, 1200);
+
+    } else {
+      // Credenciales incorrectas: mostrar mensaje de error
+      mensajeDiv.style.color = '#e74c3c';
+      mensajeDiv.textContent = '❌ ' + datos.mensaje;
+    }
+
+  } catch (error) {
+    // Error de red o del servidor: informar al usuario
+    mensajeDiv.style.color = '#e74c3c';
+    mensajeDiv.textContent = '❌ Error de conexión con el servidor. Verifique que el backend PHP esté activo.';
+    console.error('Error en login:', error);
+  }
+});
+</script>
 
 </body>
 </html>

@@ -68,25 +68,115 @@ Se mantiene la consistencia visual y de datos en todos los perfiles y modales:
 
 ---
 
-## 🔮 Futuras Actualizaciones: Tercerización con Servidor Externo y PHP
+## 🔌 Integración Backend PHP y Base de Datos MySQL
 
-Todo mecanismo de persistencia y guardado que anteriormente utilizaba `LocalStorage` o entornos locales simulados (`LocalHost`) ha sido removido del código fuente frontend y documentado en esta sección para ser implementado mediante una arquitectura cliente-servidor robusta y tercerizada:
+Se implementó la conexión completa entre el sitio web y la base de datos MySQL **`u283509122_cyp`** alojada en Hostinger. El backend utiliza PHP con PDO (prepared statements) para garantizar seguridad contra inyecciones SQL, y expone una API de endpoints JSON consumidos por el frontend mediante `fetch` (AJAX).
 
-1. **Servidor Backend Dedicado (PHP 8.x):**
-   - Desarrollo de una API RESTful o arquitectura basada en endpoints PHP (`/api/login.php`, `/api/user.php`, `/api/notifications.php`, `/api/messages.php`).
-   - Gestión nativa de sesiones seguras en el servidor mediante `$_SESSION` y cookies con directivas `HttpOnly`, `Secure` y `SameSite=Strict`.
+### 🗄️ Esquema de Base de Datos
 
-2. **Base de Datos Relacional Centralizada (MySQL / PostgreSQL):**
-   - **Tabla `usuarios`:** Almacenamiento de credenciales con hashing criptográfico (`password_hash` con algoritmo `PASSWORD_BCRYPT` o `PASSWORD_ARGON2ID`), roles, avatares y estados de conexión (`online`/`offline`) calculados por actividad en el servidor.
-   - **Tabla `amigos` y `solicitudes`:** Relación muchos a muchos para el manejo en tiempo real de amistades, solicitudes entrantes y estados de aprobación.
-   - **Tabla `notificaciones` y `mensajes`:** Persistencia de bandejas de entrada, lectura/no lectura e historial de mensajes privados entre usuarios.
-   - **Tabla `preferencias_usuario`:** Guardado del tema de fondo personalizado de cada usuario en el servidor o CDN en lugar de memoria volátil del navegador.
+La base de datos `u283509122_cyp` contiene las siguientes **5 tablas**:
 
-3. **Autenticación y Seguridad Avanzada:**
-   - Implementación de tokens JWT o sesiones PHP con renovación periódica contra ataques de fijación de sesión.
-   - Sanitización y validación estricta de entradas en el servidor contra inyecciones SQL (PDO prepared statements) y ataques XSS.
+| Tabla | Campos | Descripción |
+| :--- | :--- | :--- |
+| `usuario` | `id_usuario`, `nombre_usuario`, `avatar`, `fondo` | Datos de perfil público de cada usuario (nombre, foto de perfil y fondo personalizado). |
+| `inicio_sesion` | `id_inicio_sesion`, `id_usuario`, `usuario_login`, `contrasena_hex` | Credenciales de acceso. La contraseña se almacena en formato hexadecimal. |
+| `actividad_usuario` | `id_actividad`, `id_usuario`, `estado`, `edad_texto`, `ubicacion`, `ultimo_login` | Información biográfica y estado de conexión (online/offline) que se muestra en el perfil. |
+| `amiguitos` | `id_amiguito`, `id_usuario_propietario`, `id_usuario_amigo`, `fecha_agregado`, `estado_amistad` | Relaciones de amistad entre usuarios con estado (pendiente, aceptado, rechazado). |
+| `registro` | `id_registro`, `id_usuario`, `correo_electronico`, `fecha_registro`, `estado_cuenta` | Datos de registro de cuentas: correo, fecha de alta y estado (activa, suspendida). |
 
-4. **Sincronización en Tiempo Real:**
+### 🏗️ Arquitectura Backend (PHP)
+
+```text
+php/
+├── config/
+│   └── database.php          # Conexión centralizada PDO a MySQL (u283509122_cyp)
+├── modelos/
+│   ├── Usuario.php            # CRUD tabla usuario (obtener por ID/nombre, actualizar avatar/fondo)
+│   ├── InicioSesion.php       # Verificación de credenciales contra tabla inicio_sesion
+│   ├── ActividadUsuario.php   # Gestión de estado, edad, ubicación y último login
+│   ├── Amiguitos.php          # Gestión de amistades (listar, agregar, aceptar, eliminar)
+│   └── Registro.php           # Gestión de registros de cuentas (crear, consultar, estado)
+└── api/
+    ├── login.php              # POST — Autenticación de usuario y creación de sesión PHP
+    ├── logout.php             # POST — Cierre de sesión y actualización de estado a offline
+    ├── sesion.php             # GET  — Verificar si el usuario tiene sesión activa
+    ├── perfil.php             # GET  — Obtener datos completos de un perfil (?id= o ?nombre=)
+    └── amigos.php             # GET/POST/PUT/DELETE — CRUD completo de amiguitos
+```
+
+### 🔗 Endpoints de la API PHP
+
+| Endpoint | Método | Parámetros | Descripción |
+| :--- | :--- | :--- | :--- |
+| `php/api/login.php` | `POST` | `{ usuario_login, contrasena }` | Valida credenciales contra la BD, inicia sesión PHP y retorna datos del perfil. |
+| `php/api/logout.php` | `POST` | — | Cierra la sesión, actualiza estado a "offline" y destruye la sesión PHP. |
+| `php/api/sesion.php` | `GET` | — | Verifica si existe sesión activa; retorna datos del usuario logueado o indica que no hay sesión. |
+| `php/api/perfil.php` | `GET` | `?id=<id>` o `?nombre=<nombre>` | Retorna datos completos del perfil: usuario + actividad + registro. |
+| `php/api/amigos.php` | `GET` | `?id_usuario=<id>` | Lista los amigos de un usuario con datos de perfil (JOIN con tabla usuario). |
+| `php/api/amigos.php` | `POST` | `{ id_propietario, id_amigo }` | Envía solicitud de amistad (estado inicial: "pendiente"). |
+| `php/api/amigos.php` | `PUT` | `{ id_amiguito, estado_amistad }` | Acepta o rechaza una solicitud de amistad. |
+| `php/api/amigos.php` | `DELETE` | `{ id_amiguito }` | Elimina una relación de amistad. |
+
+Todas las respuestas siguen el formato JSON:
+```json
+{
+  "exito": true,
+  "mensaje": "Descripción del resultado",
+  "datos": { ... }
+}
+```
+
+### 🔐 Configuración de la Conexión a la Base de Datos
+
+El archivo `php/config/database.php` centraliza la conexión PDO. Para activar la conexión en el hosting, se debe configurar la contraseña real:
+
+```php
+define('DB_HOST', 'localhost');          // Host del servidor MySQL en Hostinger
+define('DB_NAME', 'u283509122_cyp');     // Nombre de la base de datos
+define('DB_USER', 'u283509122_cyp');     // Usuario de la base de datos
+define('DB_PASS', '');                   // ← COMPLETAR con la contraseña real del hosting
+define('DB_CHARSET', 'utf8mb4');         // Charset completo con soporte de emojis
+```
+
+> **⚠️ Importante:** La contraseña de la base de datos (`DB_PASS`) debe ser configurada directamente en el servidor de producción. Por seguridad, no se incluye en el repositorio.
+
+### 🔄 Flujo de Autenticación (Login)
+
+1. El usuario ingresa su **usuario** y **contraseña** en el formulario de `login.html`.
+2. El frontend envía los datos al endpoint `php/api/login.php` mediante `fetch` (AJAX con JSON).
+3. El backend busca al usuario en la tabla `inicio_sesion` y compara la contraseña convertida a hexadecimal con `contrasena_hex`.
+4. Si las credenciales son válidas:
+   - Se obtienen los datos del perfil desde las tablas `usuario` y `actividad_usuario`.
+   - Se actualiza el estado a **"online"** y se registra la fecha/hora del último login.
+   - Se crea una sesión PHP (`$_SESSION`) con los datos del usuario.
+   - Se retorna un JSON con `exito: true` y los datos del perfil.
+5. El frontend recibe la respuesta, muestra un mensaje de bienvenida y redirige al perfil correspondiente (`ulises.html` o `amir.html`).
+
+### 🛡️ Seguridad Implementada
+
+- **PDO Prepared Statements:** Todas las consultas SQL usan parámetros preparados para prevenir inyecciones SQL.
+- **Validación de entrada:** Los datos recibidos se validan y sanitizan antes de procesarse.
+- **Sesiones PHP seguras:** Se gestiona la autenticación mediante `$_SESSION` en el servidor.
+- **Manejo de errores:** Los errores de BD se registran en logs del servidor sin exponer información sensible al usuario.
+- **CORS configurado:** Los endpoints incluyen cabeceras de control de acceso para peticiones cross-origin.
+
+---
+
+## 🔮 Futuras Actualizaciones Pendientes
+
+Las siguientes mejoras están planificadas para próximas versiones:
+
+1. **Seguridad Avanzada:**
+   - Migración de contraseñas hexadecimales a hashing con `password_hash` (BCRYPT/ARGON2ID).
+   - Implementación de tokens CSRF en formularios.
+   - Cookies de sesión con directivas `HttpOnly`, `Secure` y `SameSite=Strict`.
+
+2. **Funcionalidades Adicionales:**
+   - Endpoints para notificaciones y mensajes privados.
+   - Subida de avatares y fondos directamente desde el perfil al servidor.
+   - Panel de administración para gestión de usuarios.
+
+3. **Sincronización en Tiempo Real:**
    - Posibilidad de incorporar WebSockets o Server-Sent Events (SSE) para actualización en vivo del estado de los amigos y avisos instantáneos de nuevos mensajes o notificaciones.
 
 ---
@@ -106,7 +196,7 @@ Todo mecanismo de persistencia y guardado que anteriormente utilizaba `LocalStor
 unodostres/
 ├── README.md               # Documentación general y planificación de actualizaciones
 ├── index.html              # Portada principal y acceso a perfiles
-├── login.html              # Pantalla de acceso a perfiles de Amir y Ulises
+├── login.html              # Pantalla de login con formulario conectado al backend PHP
 ├── ulises.html             # Perfil individual de Ulises (ulisesl+kpo)
 ├── amir.html               # Perfil individual de Amir (amir1234)
 ├── blue-spiral.html        # Vista y lanzador del juego Blue Spiral
@@ -121,6 +211,21 @@ unodostres/
 │   └── style.css           # Estilos retro, Flexbox, Grid y diseño responsivo
 ├── js/
 │   └── app.js              # Controlador de modales, eventos y personalización de temas
+├── php/                    # ★ Backend PHP con conexión a base de datos MySQL
+│   ├── config/
+│   │   └── database.php    #   Conexión PDO centralizada a u283509122_cyp (Hostinger)
+│   ├── modelos/
+│   │   ├── Usuario.php     #   Modelo CRUD para tabla usuario
+│   │   ├── InicioSesion.php#   Modelo de verificación de credenciales
+│   │   ├── ActividadUsuario.php # Modelo de actividad y estado del usuario
+│   │   ├── Amiguitos.php   #   Modelo de relaciones de amistad
+│   │   └── Registro.php    #   Modelo de registro de cuentas
+│   └── api/
+│       ├── login.php       #   Endpoint POST: autenticación y sesión
+│       ├── logout.php      #   Endpoint POST: cierre de sesión
+│       ├── sesion.php      #   Endpoint GET: verificar sesión activa
+│       ├── perfil.php      #   Endpoint GET: datos completos del perfil
+│       └── amigos.php      #   Endpoint CRUD: gestión de amiguitos
 ├── img/                    # Catálogo de recursos gráficos, avatares (fede p.jpeg, gonogld.jpg, etc.)
 ├── package.json            # Configuración de dependencias
 └── webpack.config.*.js     # Configuración de compilación Webpack
